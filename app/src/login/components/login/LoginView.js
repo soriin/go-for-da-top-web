@@ -4,6 +4,6 @@ export default {
   config : {
     bindings         : {  },
     templateUrl      : 'src/login/components/login/LoginView.html',
-    controller       : [ LoginViewController ]
+    controller       : [ '$window', '$cookies', LoginViewController ]
   }
 };

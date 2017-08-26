@@ -1,9 +1,7 @@
-<p>Hey, login!</p>
-<fb:login-button scope="public_profile,email" onlogin="console.log('worked');">
-</fb:login-button>
-<script type="text/javascript">
-  if (FB) {
-            FB.XFBML.parse();
-        }
-
-</script>
+<div ng-if="$ctrl.isLoggedIn === true">
+  <p >Hey, {{$ctrl.user.realName}}!</p>
+  <md-button ng-click="$ctrl.logout()">Logout</md-button>
+</div>
+<div ng-if="$ctrl.isLoggedIn === false">
+  <md-button ng-click="$ctrl.login()">Login</md-button>
+</div>

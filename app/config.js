@@ -13,9 +13,11 @@ System.config({
     "angular": "github:angular/bower-angular@1.5.8",
     "angular-animate": "github:angular/bower-angular-animate@1.5.8",
     "angular-aria": "github:angular/bower-angular-aria@1.5.8",
+    "angular-cookies": "github:angular/bower-angular-cookies@1.5.8",
     "angular-material": "github:angular/bower-material@master",
     "angular-messages": "github:angular/bower-angular-messages@1.5.8",
     "angular-mocks": "github:angular/bower-angular-mocks@1.5.8",
+    "angular-resource": "github:angular/bower-angular-resource@1.5.8",
     "css": "github:systemjs/plugin-css@0.1.33",
     "json": "github:systemjs/plugin-json@0.1.2",
     "text": "github:systemjs/plugin-text@0.0.4",
@@ -27,7 +29,13 @@ System.config({
     "github:angular/bower-angular-aria@1.5.8": {
       "angular": "github:angular/bower-angular@1.5.8"
     },
+    "github:angular/bower-angular-cookies@1.5.8": {
+      "angular": "github:angular/bower-angular@1.5.8"
+    },
     "github:angular/bower-angular-messages@1.5.8": {
+      "angular": "github:angular/bower-angular@1.5.8"
+    },
+    "github:angular/bower-angular-resource@1.5.8": {
       "angular": "github:angular/bower-angular@1.5.8"
     },
     "github:angular/bower-material@master": {
