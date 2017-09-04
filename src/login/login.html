@@ -1,0 +1,30 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../shared-styles.html">
+<link rel="import" href="../reduxMixin.html">
+<link rel="import" href="../config.html">
+
+
+<dom-module id="gfdt-login">
+  <template>
+    <style include="shared-styles">
+       :host {
+        display: block;
+
+        padding: 10px;
+      }
+    </style>
+
+    <div class="card">
+      <div hidden$="[[!user]]">
+        <p>Hey, [[user.realName]]!</p>
+        <paper-button on-tap="logoutUser">Logout</paper-button>
+      </div>
+      <div hidden$="[[user]]">
+        <paper-button on-tap="loginUser">Login with Facebook</paper-button>
+      </div>
+    </div>
+  </template>
+
+  <script src="login.js"></script>
+</dom-module>

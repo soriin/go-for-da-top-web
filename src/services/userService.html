@@ -1,0 +1,12 @@
+<link rel="import" href="./fetchRequest.html">
+
+<dom-module id="gfdt-user-service">
+  <script>
+    class UserService {
+      getCurrentUser() {
+        const req = createRequest('users/me')
+        return fetch(req)
+      }
+    }
+  </script>
+</dom-module>

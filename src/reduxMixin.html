@@ -1,0 +1,38 @@
+<link rel="import" href="../bower_components/polymer-redux/polymer-redux.html">
+<script src="../node_modules/redux/dist/redux.js"></script>
+
+<script>
+    const initialState = {
+        user: null,
+        currentTournament: { title: 'test title' },
+        tournaments: {
+          active : [
+            {
+              title: 'Placeholder tournament'
+            }
+          ],
+          mine: []
+        }
+    }
+
+    const reducer = (state, action) => {
+        if (!state) return initialState
+
+        switch (action.type) {
+            case 'changeUser':
+                const user = action.user
+
+                return Object.assign({}, state, {user: user})
+            break;
+            case 'updateActiveTournaments':
+              const tournaments = action.tournaments
+              return Object.assign({}, state, {tournaments: { active: tournaments }})
+              break;
+            default:
+                throw Error('unknown action type')
+        }
+    }
+
+    const Store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+    ReduxMixin = PolymerRedux(Store)
+</script>

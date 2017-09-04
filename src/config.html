@@ -1,0 +1,27 @@
+
+<dom-module id="gfdt-config">
+  <script>
+    class Config {
+      constructor() {
+        this.rootUrl = 'http://local.goforda.top:3000/'
+      }
+
+      static get rootUrl() {
+        return this.rootUrl
+      }
+
+      routeToPath(route) {
+        switch (route) {
+          case "login":
+            return "login/login"
+          case "active":
+            return "tournament/active-tournaments"
+          case "create-tournament":
+            return "tournament/tournament-form"
+          default:
+            return route
+        }
+      }
+    }  
+  </script>
+</dom-module>

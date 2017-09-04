@@ -1,0 +1,20 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../shared-styles.html">
+<link rel="import" href="../reduxMixin.html">
+<link rel="import" href="../services/tournamentService.html">
+
+<dom-module id="gfdt-active-tournaments">
+  <template>
+    <div class="active-tournaments-container">
+      Active Tournaments!
+      
+      <template is="dom-repeat" items="[[activeTournaments]]" as="tournament">
+        <h1>{{tournament.title}}</h1>
+        <span>{{tournament.startDate}} - {{tournament.endDate}}</span>
+      </template>
+    </div>
+  </template>
+
+  <script src="active-tournaments.js"></script>
+</dom-module>

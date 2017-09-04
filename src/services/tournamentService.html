@@ -1,0 +1,23 @@
+<link rel="import" href="./fetchRequest.html">
+
+<dom-module id="gfdt-tournament-service">
+  <script>
+    class TournamentService {
+      getActive() {
+        const req = createRequest('tournaments?active=true')
+        return fetch(req)
+      }
+
+      create(data) {
+        let payload
+        if (typeof(data) === 'object') {
+          payload = JSON.stringify(data)
+        } else {
+          payload = data
+        }
+        const req = createRequest('tournaments', {method: 'POST', body: payload})
+        return fetch (req)
+      }
+    }
+  </script>
+</dom-module>
