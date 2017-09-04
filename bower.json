@@ -30,7 +30,9 @@
     "paper-icon-button": "^2.0.0",
     "webcomponentsjs": "^v1.0.2",
     "iron-a11y-keys-behavior": "^2.0.0",
-    "iron-resizable-behavior": "^2.0.0"
+    "iron-resizable-behavior": "^2.0.0",
+    "iron-flex-layout": "^2.0.0",
+    "iron-iconset-svg": "^2.0.0"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0"
