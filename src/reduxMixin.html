@@ -4,15 +4,16 @@
 <script>
     const initialState = {
         user: null,
-        currentTournament: { title: 'test title' },
+        currentTournament: null,
         tournaments: {
-          active : [
-            {
-              title: 'Placeholder tournament'
-            }
-          ],
+          active : [],
           mine: []
         }
+    }
+
+    const updateTournament = (state, tournament) => {
+      const newState = Object.assign({}, state)
+      return newState
     }
 
     const reducer = (state, action) => {
@@ -28,6 +29,10 @@
               const tournaments = action.tournaments
               return Object.assign({}, state, {tournaments: { active: tournaments }})
               break;
+              case 'updateTournament':
+                const newState = updateTournament(state, action.tournament)
+                return newState
+              break
             default:
                 throw Error('unknown action type')
         }

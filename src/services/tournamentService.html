@@ -18,6 +18,11 @@
         const req = createRequest('tournaments', {method: 'POST', body: payload})
         return fetch (req)
       }
+
+      join(tournamentId) {
+        const req = createRequest(`tournaments/${tournamentId}/entrant`, {method: 'POST'})
+        return fetch (req)
+      }
     }
   </script>
 </dom-module>

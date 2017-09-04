@@ -17,6 +17,19 @@ class ActiveTournaments extends ReduxMixin(Polymer.Element) {
     }
   }
 
+  async join(ev) {
+    try {
+      const tournamentId = ev.target.dataset.tournamentId
+      const response = await this.tournamentSvc.join(tournamentId)
+      if (response.ok) {
+        const data = await response.json()
+        this.dispatch('updateTournament', data)
+      }
+    } catch (e) {
+      console.error('error joining tournaments', e)
+    }
+  }
+
   static get is() { return 'gfdt-active-tournaments'; }
 
   static get actions() {
@@ -25,6 +38,12 @@ class ActiveTournaments extends ReduxMixin(Polymer.Element) {
         return {
           tournaments,
           type: 'updateActiveTournaments'
+        }
+      },
+      updateTournament(tournament) {
+        return {
+          tournament,
+          type: 'updateTournament'
         }
       }
     }
