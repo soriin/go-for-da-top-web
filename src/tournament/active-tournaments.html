@@ -3,6 +3,7 @@
 <link rel="import" href="../shared-styles.html">
 <link rel="import" href="../reduxMixin.html">
 <link rel="import" href="../services/tournamentService.html">
+<link rel="import" href="../vendor/lodash.html">
 
 <dom-module id="gfdt-active-tournaments">
   <template>
@@ -12,14 +13,21 @@
     <div class="active-tournaments-container">
       Active Tournaments!
       <paper-button on-tap="refreshTournaments">Refresh</paper-button>
-      
+
       <template is="dom-repeat" items="[[activeTournaments]]" as="tournament">
-        <h1>{{tournament.title}}</h1>
-        <span>{{tournament.startDate}} - {{tournament.endDate}}</span>
-        <paper-button on-tap="join" data-tournament-id$="[[tournament._id]]" raised>Join</paper-button>
+        <h1>[[tournament.title]]</h1>
+        <span>[[tournament.startDate]] - [[tournament.endDate]]</span>
+        <span></span>
+        <div hidden$="[[amIJoined(tournament, user._id)]]">
+            <paper-button on-tap="join" data-tournament-id$="[[tournament._id]]" raised>Join</paper-button>
+        </div>
+        <div hidden$="[[!amIJoined(tournament, user._id)]]">
+            <paper-button on-tap="leave" data-tournament-id$="[[tournament._id]]" raised>Leave</paper-button>
+        </div>
       </template>
     </div>
   </template>
 
-  <script src="active-tournaments.js"></script>
+  <script src="active-tournaments.js">
+  </script>
 </dom-module>

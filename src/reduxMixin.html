@@ -1,43 +1,59 @@
 <link rel="import" href="../bower_components/polymer-redux/polymer-redux.html">
+<link rel="import" href="./vendor/lodash.html">
 <script src="../node_modules/redux/dist/redux.js"></script>
 
 <script>
-    const initialState = {
-        user: null,
-        currentTournament: null,
-        tournaments: {
-          active : [],
-          mine: []
-        }
+  const initialState = {
+    user: null,
+    currentTournament: null,
+    tournaments: []
+  }
+
+  const addEntrant = (state, tournamentId, userId) => {
+    const newState = {...state}
+    newState.tournaments = state.tournaments.map((t) => {
+      if (t._id === tournamentId) {
+        const newT = { ...t }
+        newT.entrants = [...newT.entrants, userId]
+        return newT
+      }
+      return t
+    })
+    return newState
+  }
+
+  const removeEntrant = (state, tournamentId, userId) => {
+    const newState = Object.assign({}, state)
+    newState.tournaments.active = _.remove(newState.tournaments.active, { _id: tournamentId })
+
+    if (newState.currentTournament && newState.currentTourmanet._id === tournamentId) newState.currentTournament.entrants.push(userId)
+    return newState
+  }
+
+  const reducer = (state, action) => {
+    if (!state) return initialState
+
+    switch (action.type) {
+      case 'changeUser':
+        const user = action.user
+        return Object.assign({}, state, { user: user })
+        break;
+      case 'updateActiveTournaments':
+        const tournaments = action.tournaments
+        return Object.assign({}, state, { tournaments: tournaments })
+        break;
+      case 'addEntrant':
+        return addEntrant(state, action.tournamentId, action.userId)
+        break
+      case 'removeEntrant':
+        return removeEntrant(state, action.tournamentId, action.userId)
+        break
+      default:
+        throw Error('unknown action type')
     }
+  }
 
-    const updateTournament = (state, tournament) => {
-      const newState = Object.assign({}, state)
-      return newState
-    }
+  const Store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+  ReduxMixin = PolymerRedux(Store)
 
-    const reducer = (state, action) => {
-        if (!state) return initialState
-
-        switch (action.type) {
-            case 'changeUser':
-                const user = action.user
-
-                return Object.assign({}, state, {user: user})
-            break;
-            case 'updateActiveTournaments':
-              const tournaments = action.tournaments
-              return Object.assign({}, state, {tournaments: { active: tournaments }})
-              break;
-              case 'updateTournament':
-                const newState = updateTournament(state, action.tournament)
-                return newState
-              break
-            default:
-                throw Error('unknown action type')
-        }
-    }
-
-    const Store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
-    ReduxMixin = PolymerRedux(Store)
 </script>
