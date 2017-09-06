@@ -23,10 +23,15 @@
   }
 
   const removeEntrant = (state, tournamentId, userId) => {
-    const newState = Object.assign({}, state)
-    newState.tournaments.active = _.remove(newState.tournaments.active, { _id: tournamentId })
-
-    if (newState.currentTournament && newState.currentTourmanet._id === tournamentId) newState.currentTournament.entrants.push(userId)
+    const newState = {...state}
+    newState.tournaments = state.tournaments.map((t) => {
+      if (t._id === tournamentId) {
+        const newT = { ...t }
+        newT.entrants = newT.entrants.filter((x) => x !== userId )
+        return newT
+      }
+      return t
+    })
     return newState
   }
 
