@@ -8,6 +8,11 @@
         return fetch(req)
       }
 
+      getInactive() {
+        const req = createRequest('tournaments?active=false')
+        return fetch(req)
+      }
+
       create(data) {
         let payload
         if (typeof(data) === 'object') {
