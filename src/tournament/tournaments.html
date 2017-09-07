@@ -5,16 +5,16 @@
 <link rel="import" href="../services/tournamentService.html">
 <link rel="import" href="../vendor/lodash.html">
 
-<dom-module id="gfdt-active-tournaments">
+<dom-module id="gfdt-tournaments">
   <template>
     <style include="shared-styles">
 
     </style>
-    <div class="active-tournaments-container">
-      Active Tournaments!
+    <div class="tournaments-container">
+      Tournaments!
       <paper-button on-tap="refreshTournaments">Refresh</paper-button>
 
-      <template is="dom-repeat" items="[[activeTournaments]]" as="tournament">
+      <template is="dom-repeat" items="[[tournaments]]" as="tournament">
         <h1>[[tournament.title]]</h1>
         <span>[[tournament.startDate]] - [[tournament.endDate]]</span>
         <span></span>
@@ -28,6 +28,6 @@
     </div>
   </template>
 
-  <script src="active-tournaments.js">
+  <script src="tournaments.js">
   </script>
 </dom-module>

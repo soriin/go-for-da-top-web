@@ -1,4 +1,4 @@
-class ActiveTournaments extends ReduxMixin(Polymer.Element) {
+class Tournaments extends ReduxMixin(Polymer.Element) {
   constructor() {
     super()
     this.tournamentSvc = new TournamentService()
@@ -14,7 +14,7 @@ class ActiveTournaments extends ReduxMixin(Polymer.Element) {
       const response = await this.tournamentSvc.getActive()
       if (response.ok) {
         const data = await response.json()
-        this.dispatch('updateActiveTournaments', data)
+        this.dispatch('updateTournaments', data)
       }
     } catch (e) {
       console.error('error updating tournaments', e)
@@ -47,14 +47,14 @@ class ActiveTournaments extends ReduxMixin(Polymer.Element) {
     }
   }
 
-  static get is() { return 'gfdt-active-tournaments'; }
+  static get is() { return 'gfdt-tournaments'; }
 
   static get actions() {
     return {
-      updateActiveTournaments(tournaments) {
+      updateTournaments(tournaments) {
         return {
           tournaments,
-          type: 'updateActiveTournaments'
+          type: 'updateTournaments'
         }
       },
       addEntrant(tournamentId, userId) {
@@ -76,7 +76,7 @@ class ActiveTournaments extends ReduxMixin(Polymer.Element) {
 
   static get properties() {
     return {
-      activeTournaments: {
+      tournaments: {
         type: Array,
         statePath: 'tournaments'
       },
@@ -87,4 +87,4 @@ class ActiveTournaments extends ReduxMixin(Polymer.Element) {
     }
   }
 }
-window.customElements.define(ActiveTournaments.is, ActiveTournaments);
+window.customElements.define(Tournaments.is, Tournaments);
