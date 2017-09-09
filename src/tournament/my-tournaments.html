@@ -1,0 +1,30 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../shared-styles.html">
+<link rel="import" href="../reduxMixin.html">
+<link rel="import" href="../services/tournamentService.html">
+<link rel="import" href="../vendor/lodash.html">
+
+<dom-module id="gfdt-my-tournaments">
+  <template>
+    <style include="shared-styles">
+
+    </style>
+    <div class="tournaments-container">
+      My Tournaments!
+      <paper-button on-tap="refreshTournaments">Refresh</paper-button>
+
+      <template is="dom-repeat" items="[[myTournaments]]" as="tournament">
+        <h1>[[tournament.title]]</h1>
+        <span>[[tournament.startDate]] - [[tournament.endDate]]</span>
+        <span></span>
+        <div hidden$="[[tournament.isActive]]">
+            <paper-button on-tap="leave" data-tournament-id$="[[tournament._id]]" raised>Leave</paper-button>
+        </div>
+      </template>
+    </div>
+  </template>
+
+  <script src="my-tournaments.js">
+  </script>
+</dom-module>
