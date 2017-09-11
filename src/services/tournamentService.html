@@ -1,15 +1,20 @@
 <link rel="import" href="./fetchRequest.html">
+<link rel="import" href="../vendor/moment.html">
 
 <dom-module id="gfdt-tournament-service">
   <script>
     class TournamentService {
-      getActive() {
-        const req = createRequest('tournaments?active=true')
-        return fetch(req)
-      }
-
-      getInactive() {
-        const req = createRequest('tournaments?active=false')
+      getAll(startDate, endDate) {
+        const queryParams = {}
+        const momentStart = moment(startDate)
+        const momentEnd = moment(endDate)
+        if (startDate && momentStart.isValid()) {
+          queryParams.startDate = momentStart.toDate()
+        }
+        if (endDate && momentEnd.isValid()) {
+          queryParams.endDate = momentEnd.toDate()
+        }
+        const req = createRequest('tournaments', {}, queryParams)
         return fetch(req)
       }
 
@@ -26,6 +31,11 @@
 
       join(tournamentId) {
         const req = createRequest(`tournaments/${tournamentId}/entrant`, {method: 'POST'})
+        return fetch (req)
+      }
+
+      activate(tournamentId) {
+        const req = createRequest(`tournaments/${tournamentId}/activation`, {method: 'POST'})
         return fetch (req)
       }
 

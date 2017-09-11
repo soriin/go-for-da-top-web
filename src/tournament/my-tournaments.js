@@ -7,7 +7,7 @@ class MyTournaments extends ReduxMixin(Polymer.Element) {
 
   async refreshTournaments() {
     try {
-      const response = await this.tournamentSvc.getInactive()
+      const response = await this.tournamentSvc.getAll()
       if (response.ok) {
         const data = await response.json()
         this.dispatch('updateTournaments', data)

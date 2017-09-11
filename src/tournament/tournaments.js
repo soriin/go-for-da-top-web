@@ -5,13 +5,21 @@ class Tournaments extends ReduxMixin(Polymer.Element) {
     this.refreshTournaments()
   }
 
-  amIJoined(tournament, userId) {
-    return tournament.entrants.includes(userId)
+  canJoin(tournament, userId) {
+    return !tournament.entrants.includes(userId) && !tournament.isActive
+  }
+
+  canLeave(tournament, userId) {
+    return tournament.entrants.includes(userId) && !tournament.isActive
+  }
+
+  canActivate(tournament, userId) {
+    return tournament.organizers.includes(userId) && !tournament.isActive
   }
 
   async refreshTournaments() {
     try {
-      const response = await this.tournamentSvc.getInactive()
+      const response = await this.tournamentSvc.getAll()
       if (response.ok) {
         const data = await response.json()
         this.dispatch('updateTournaments', data)
@@ -31,6 +39,19 @@ class Tournaments extends ReduxMixin(Polymer.Element) {
       }
     } catch (e) {
       console.error('error joining tournaments', e)
+    }
+  }
+
+  async activate(ev) {
+    try {
+      const tournamentId = ev.target.dataset.tournamentId
+      const response = await this.tournamentSvc.activate(tournamentId)
+      if (response.ok) {
+        const data = await response.json()
+        this.dispatch('updateTournament', data)
+      }
+    } catch (e) {
+      console.error('error activating tournaments', e)
     }
   }
 
@@ -55,6 +76,12 @@ class Tournaments extends ReduxMixin(Polymer.Element) {
         return {
           tournaments,
           type: 'updateTournaments'
+        }
+      },
+      updateTournament(tournament) {
+        return {
+          tournament,
+          type: 'updateTournament'
         }
       },
       addEntrant(tournamentId, userId) {

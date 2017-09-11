@@ -15,7 +15,6 @@ class TournamentForm extends ReduxMixin(Polymer.Element) {
   }
 
   async formSubmit() {
-    let message
     try {
       const form = this.$.tournamentForm;
       const formValues = form.serializeForm()
@@ -38,7 +37,11 @@ class TournamentForm extends ReduxMixin(Polymer.Element) {
 
   static get is() { return 'gfdt-tournament-form'; }
   static get actions() {
-    return {}
+    return {
+      updateTournament(tournament) {
+
+      }
+    }
   }
   static get properties() {
     return {

@@ -1,9 +1,11 @@
 <dom-module id="gfdt-fetch-request">
   <script>
-    function createRequest(url, initOptions = {}) {
+    function createRequest(endpointUrl, initOptions = {}, queryParams = {}) {
       const config = new Config()
       const token = Cookies.get('gfdt_access_token_id');
-      const req = new Request(`${config.rootUrl}${url}`, initOptions)
+      const url = new URL(`${config.rootUrl}${endpointUrl}`)
+      Object.keys(queryParams).forEach(key => url.searchParams.append(key, queryParams[key]))
+      const req = new Request(url, initOptions)
       req.headers.set('Authorization', `Bearer ${token}`)
       req.headers.set('Content-Type', 'application/json')
       return req

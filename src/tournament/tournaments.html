@@ -4,6 +4,7 @@
 <link rel="import" href="../reduxMixin.html">
 <link rel="import" href="../services/tournamentService.html">
 <link rel="import" href="../vendor/lodash.html">
+<link rel="import" href="../vendor/moment.html">
 
 <dom-module id="gfdt-tournaments">
   <template>
@@ -17,12 +18,17 @@
       <template is="dom-repeat" items="[[tournaments]]" as="tournament">
         <h1>[[tournament.title]]</h1>
         <span>[[tournament.startDate]] - [[tournament.endDate]]</span>
-        <span></span>
-        <div hidden$="[[amIJoined(tournament, user._id)]]">
+        <div hidden$="[[!tournament.isActive]]">
+          <span>IN PROGRESS</span>
+        </div>
+        <div hidden$="[[!canJoin(tournament, user._id)]]">
             <paper-button on-tap="join" data-tournament-id$="[[tournament._id]]" raised>Join</paper-button>
         </div>
-        <div hidden$="[[!amIJoined(tournament, user._id)]]">
+        <div hidden$="[[!canLeave(tournament, user._id)]]">
             <paper-button on-tap="leave" data-tournament-id$="[[tournament._id]]" raised>Leave</paper-button>
+        </div>
+        <div hidden$="[[!canActivate(tournament, user._id)]]">
+            <paper-button on-tap="activate" data-tournament-id$="[[tournament._id]]" raised>Start!</paper-button>
         </div>
       </template>
     </div>

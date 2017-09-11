@@ -1,11 +1,9 @@
 <link rel="import" href="../bower_components/polymer-redux/polymer-redux.html">
-<link rel="import" href="./vendor/lodash.html">
 <script src="../node_modules/redux/dist/redux.js"></script>
 
 <script>
   const initialState = {
     user: null,
-    currentTournament: null,
     tournaments: []
   }
 
@@ -46,6 +44,16 @@
       case 'updateTournaments':
         const tournaments = action.tournaments
         return Object.assign({}, state, { tournaments: tournaments })
+        break;
+      case 'updateTournament':
+        const tournament = action.tournament
+        const updatedTournaments = state.tournaments.map((t) => {
+          if (t._id === tournament._id) {
+            return tournament
+          }
+          return t
+        })
+        return Object.assign({}, state, { tournaments: updatedTournaments })
         break;
       case 'addEntrant':
         return addEntrant(state, action.tournamentId, action.userId)
