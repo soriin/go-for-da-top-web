@@ -13,9 +13,12 @@
     </style>
     <div class="tournaments-container">
       Tournaments!
-      <paper-button on-tap="refreshTournaments">Refresh</paper-button>
+      <div>
+        <paper-button on-tap="setFilter" data-filter="mine">Only Mine</paper-button>
+        <paper-button on-tap="setFilter" data-filter="all">All</paper-button>
+      </div>
 
-      <template is="dom-repeat" items="[[tournaments]]" as="tournament">
+      <template is="dom-repeat" items="[[tournamentsToDisplay]]" as="tournament">
         <h1>[[tournament.title]]</h1>
         <span>[[tournament.startDate]] - [[tournament.endDate]]</span>
         <div hidden$="[[!tournament.isActive]]">

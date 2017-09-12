@@ -23,9 +23,24 @@ class Tournaments extends ReduxMixin(Polymer.Element) {
       if (response.ok) {
         const data = await response.json()
         this.dispatch('updateTournaments', data)
+        this.tournamentsToDisplay = data
       }
     } catch (e) {
       console.error('error updating tournaments', e)
+    }
+  }
+
+  setFilter(ev) {
+    this.dispatch('changeTournamentFilter', ev.target.dataset.filter)
+  }
+
+  tournamentListChanged() {
+    switch (this.tournamentFilter) {
+      case 'mine':
+        return this.tournaments.filter((t) => t.entrants.includes(this.user._id))
+      case 'all':
+      default:
+        return this.tournaments
     }
   }
 
@@ -97,6 +112,12 @@ class Tournaments extends ReduxMixin(Polymer.Element) {
           userId,
           type: 'removeEntrant'
         }
+      },
+      changeTournamentFilter(filter) {
+        return {
+          filter,
+          type: 'changeTournamentFilter'
+        }
       }
     }
   }
@@ -107,9 +128,17 @@ class Tournaments extends ReduxMixin(Polymer.Element) {
         type: Array,
         statePath: 'tournaments'
       },
+      tournamentsToDisplay: {
+        type: Array,
+        computed: 'tournamentListChanged(tournaments.*, tournamentFilter)'
+      },
       user: {
         type: Object,
         statePath: 'user'
+      },
+      tournamentFilter: {
+        type: String,
+        statePath: 'tournamentFilter'
       }
     }
   }
