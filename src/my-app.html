@@ -82,7 +82,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </div>
           <div hidden$="[[!user]]">
               <a name="tournaments" href="[[rootPath]]tournaments">Tournaments</a>
-              <a name="my-tournaments" href="[[rootPath]]my-tournaments">My Tournaments</a>
               <a name="create-tournament" href="[[rootPath]]create-tournament">Create Tournament</a>
           </div>
           
@@ -102,8 +101,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="my-view404" role="main">
           <my-view404 name="my-view404"></my-view404>
           <gfdt-login name="login"></gfdt-login>
-          <gfdt-tournaments name="tournaments"></gfdt-tournaments>
-          <gfdt-my-tournaments name="my-tournaments"></gfdt-my-tournaments>
+          <gfdt-tournaments name="tournaments" cust-prop="omgyes"></gfdt-tournaments>
           <gfdt-tournament-form name="create-tournament"></gfdt-tournament-form>
         </iron-pages>
       </app-header-layout>
