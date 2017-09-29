@@ -19,20 +19,9 @@
     "iron-form": "^2.0.0",
     "iron-input": "^2.0.0",
     "paper-input": "^2.0.1",
-    "paper-date-picker": "polymer-paper-date-picker#^1.2.1",
     "vaadin-date-picker": "^2.0.2",
-    "paper-snackbar": "justinribeiro/paper-snackbar#^2.0.2"
-  },
-  "resolutions": {
-    "polymer": "^2.0.0",
-    "iron-media-query": "1 - 2",
-    "iron-selector": "^2.0.0",
-    "paper-icon-button": "^2.0.0",
-    "webcomponentsjs": "^v1.0.2",
-    "iron-a11y-keys-behavior": "^2.0.0",
-    "iron-resizable-behavior": "^2.0.0",
-    "iron-flex-layout": "^2.0.0",
-    "iron-iconset-svg": "^2.0.0"
+    "paper-snackbar": "justinribeiro/paper-snackbar#^2.0.2",
+    "paper-number-input": "Zecat/paper-number-input#^1.0.0"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0"
