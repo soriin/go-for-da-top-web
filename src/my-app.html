@@ -212,8 +212,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ready() {
         super.ready()
         Store.getState().routeSubject.subscribe((x) => {
-          this.page = x
-          this.route = x
+          this.set('route.path', x)
         })
       }
     }
