@@ -5,7 +5,8 @@
   const initialState = {
     user: null,
     tournaments: [],
-    tournamentFilter: 'all'
+    tournamentFilter: 'all',
+    routeSubject: new Rx.Subject()
   }
 
   const addEntrant = (state, tournamentId, userId) => {

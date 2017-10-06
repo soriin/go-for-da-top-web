@@ -163,6 +163,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // This shouldn't be neccessary, but the Analyzer isn't picking up
           // Polymer.Element#rootPath
           rootPath: String,
+          routeSubject: {
+            path: 'routeSubject',
+            observer: '_routeSubjectSet'
+          }
         };
       }
 
@@ -199,6 +203,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _showPage404() {
         this.page = 'my-view404';
+      }
+
+      _routeSubjectSet() {
+        console.log('set')
+      }
+
+      ready() {
+        super.ready()
+        Store.getState().routeSubject.subscribe((x) => {
+          this.page = x
+          this.route = x
+        })
       }
     }
 
