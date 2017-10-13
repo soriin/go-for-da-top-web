@@ -61,6 +61,7 @@
             title: formValues.title,
             startDate: formValues.startDate,
             endDate: formValues.endDate,
+            weeks: formValues.weeks
           }
           const response = await this.tournamentSvc.create(payloadData)
           if (response.ok) {
@@ -78,7 +79,7 @@
       getEndDate(startDate, weeks) {
         const date = moment(startDate)
         if (!date.isValid()) { return }
-        this.endDate = date.add(weeks, 'weeks').format('L')
+        this.endDate = date.add(weeks + 1, 'weeks').format('L')
       }
 
       get customDateValidFilter() {
