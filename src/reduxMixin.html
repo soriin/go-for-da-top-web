@@ -6,6 +6,7 @@
     user: null,
     tournaments: [],
     tournamentFilter: 'all',
+    matchups: [],
     routeSubject: new Rx.Subject()
   }
 
@@ -56,6 +57,20 @@
           return t
         })
         return Object.assign({}, state, { tournaments: updatedTournaments })
+        break;
+      case 'updateMatchups':
+        const matchups = action.matchups
+        return Object.assign({}, state, { matchups: matchups })
+        break;
+      case 'updateMatchup':
+        const matchup = action.matchup
+        const updatedMatchups = state.matchups.map((m) => {
+          if (m._id === matchup._id) {
+            return matchup
+          }
+          return m
+        })
+        return Object.assign({}, state, { matchups: updatedMatchups })
         break;
       case 'addEntrant':
         return addEntrant(state, action.tournamentId, action.userId)

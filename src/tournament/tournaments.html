@@ -5,6 +5,8 @@
 <link rel="import" href="../services/tournamentService.html">
 <link rel="import" href="../vendor/lodash.html">
 <link rel="import" href="../vendor/moment.html">
+<link rel="import" href="../mixins/formatterMixin.html">
+<link rel="import" href="../helpers/permissionHelper.html">
 
 <dom-module id="gfdt-tournaments">
   <template>
@@ -12,7 +14,12 @@
 
     </style>
     <div class="tournaments-container">
-      Tournaments!
+      <div>
+          Tournaments!
+          <div hidden$="[[!isAdmin()]]">
+              <paper-button on-tap="redirectToCreate">Create</paper-button>
+          </div>
+      </div>
       <div>
         <paper-button on-tap="setFilter" data-filter="mine">Only Mine</paper-button>
         <paper-button on-tap="setFilter" data-filter="all">All</paper-button>
@@ -20,7 +27,7 @@
 
       <template is="dom-repeat" items="[[tournamentsToDisplay]]" as="tournament">
         <h1>[[tournament.title]]</h1>
-        <span>[[tournament.startDate]] - [[tournament.endDate]]</span>
+        <span>[[formatDate(tournament.startDate)]] - [[formatDate(tournament.endDate)]]</span>
         <div hidden$="[[!tournament.isActive]]">
           <span>IN PROGRESS</span>
         </div>
@@ -38,10 +45,11 @@
   </template>
 
   <script>
-    class Tournaments extends ReduxMixin(Polymer.Element) {
+    class Tournaments extends FormatterMixin(ReduxMixin(Polymer.Element)) {
       constructor() {
         super()
         this.tournamentSvc = new TournamentService()
+        this.permissionHelper = new PermissionHelper()
         this.refreshTournaments()
       }
 
@@ -55,6 +63,14 @@
 
       canActivate(tournament, userId) {
         return tournament.organizers.includes(userId) && !tournament.isActive
+      }
+
+      redirectToCreate() {
+        Store.getState().routeSubject.next('create-tournament')
+      }
+
+      isAdmin() {
+        return this.permissionHelper.isAdmin()
       }
 
       async refreshTournaments() {

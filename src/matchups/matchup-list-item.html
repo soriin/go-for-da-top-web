@@ -1,0 +1,32 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../shared-styles.html">
+<link rel="import" href="../reduxMixin.html">
+
+<dom-module id="gfdt-matchup-list-item">
+  <template>
+    <style include="shared-styles">
+
+    </style>
+    Matchup!
+    <script>
+      class MatchupListItem extends ReduxMixin(Polymer.Element) {
+        static get is() { return 'gfdt-battle-submission-form'; }
+        static get actions() {
+          return {
+          }
+        }
+        static get properties() {
+          return {
+
+          }
+        }
+
+        static get observers() {
+          return [
+          ]
+        }
+      }
+      window.customElements.define(BattleSubmissionForm.is, BattleSubmissionForm)
+    </script>
+  </template>
+</dom-module>

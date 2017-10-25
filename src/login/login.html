@@ -38,8 +38,6 @@
       }
       logoutUser() {
         Cookies.remove('gfdt_access_token_id');
-        Cookies.remove('gfdt_access_token_userid');
-        Cookies.remove('gfdt_access_token_user');
         this.dispatch('changeUser', null)
         window.location = '/'
       }

@@ -78,11 +78,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
           <div>
-            <a name="login" href="[[rootPath]]login">Login</a>
+            <a name="login" href="[[rootPath]]login">Profile</a>
           </div>
           <div hidden$="[[!user]]">
+              <a name="matchups" href="[[rootPath]]matchups">My Matchups</a>
               <a name="tournaments" href="[[rootPath]]tournaments">Tournaments</a>
-              <a name="create-tournament" href="[[rootPath]]create-tournament">Create Tournament</a>
           </div>
           
         </iron-selector>
@@ -101,8 +101,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="my-view404" role="main">
           <my-view404 name="my-view404"></my-view404>
           <gfdt-login name="login"></gfdt-login>
-          <gfdt-tournaments name="tournaments" cust-prop="omgyes"></gfdt-tournaments>
+          <gfdt-tournaments name="tournaments"></gfdt-tournaments>
           <gfdt-tournament-form name="create-tournament"></gfdt-tournament-form>
+          <gfdt-matchup-list name="matchups"></gfdt-matchup-list>
         </iron-pages>
       </app-header-layout>
       <paper-snackbar></paper-snackbar>
@@ -112,10 +113,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     (async () => {
       const tokenId = Cookies.get('gfdt_access_token_id');
-      const tokenUserId = Cookies.get('gfdt_access_token_userid');
-      const tokenUser = Cookies.get('gfdt_access_token_user');
 
-      if (!tokenId || !tokenUserId || !tokenUser) {
+      if (!tokenId) {
         localStorage.clear('user');
         return
       }

@@ -1,0 +1,34 @@
+<link rel="import" href="./fetchRequest.html">
+<link rel="import" href="../vendor/moment.html">
+
+<dom-module id="gfdt-matchup-service">
+  <script>
+    class MatchupService {
+      getMine() {
+        const req = createRequest('matchups')
+        return fetch(req)
+      }
+
+      submitEntry(matchupId, songId, exScore, imageProofUrl) {
+        const body = {
+          song: songId,
+          exScore,
+          imageProofUrl
+        }
+        const req = createRequest(`matchups/${matchupId}/submission`,  {method: 'POST', body: payload})
+        return fetch(req)
+      }
+
+      verify(matchupId, scores) {
+        const body = scores.map((s) => {
+          return {
+            song: s.songId,
+            
+          }
+        })
+        const req = createRequest(`matchups/${matchupId}/submission`,  {method: 'POST', body: payload})
+        return fetch(req)
+      }
+    }
+  </script>
+</dom-module>

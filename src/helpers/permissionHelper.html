@@ -1,0 +1,12 @@
+<link rel="import" href="../reduxMixin.html">
+
+<dom-module id="gfdt-permission-helper">
+  <script>
+    class PermissionHelper {
+      isAdmin() {
+        const currentUser = Store.getState().user
+        return currentUser ? currentUser.isAdmin : false
+      }
+    }
+  </script>
+</dom-module>
