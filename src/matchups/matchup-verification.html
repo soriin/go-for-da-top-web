@@ -8,25 +8,25 @@
 
     </style>
 
-    <script>
-      class MatchupVerification extends ReduxMixin(Polymer.Element) {
-        static get is() { return 'gfdt-battle-submission-form'; }
-        static get actions() {
-          return {
-          }
-        }
-        static get properties() {
-          return {
-
-          }
-        }
-
-        static get observers() {
-          return [
-          ]
+  </template>
+  <script>
+    class MatchupVerification extends ReduxMixin(Polymer.Element) {
+      static get is() { return 'gfdt-matchup-verification'; }
+      static get actions() {
+        return {
         }
       }
-      window.customElements.define(BattleSubmissionForm.is, BattleSubmissionForm)
-    </script>
-  </template>
+      static get properties() {
+        return {
+
+        }
+      }
+
+      static get observers() {
+        return [
+        ]
+      }
+    }
+    window.customElements.define(MatchupVerification.is, MatchupVerification)
+  </script>
 </dom-module>
