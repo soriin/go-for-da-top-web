@@ -1,40 +1,74 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../shared-styles.html">
 <link rel="import" href="../reduxMixin.html">
+<link rel="import" href="../services/matchupService.html">
+<link rel="import" href="./matchup-list-item.html">
 
 <dom-module id="gfdt-matchup-list">
   <template>
     <style include="shared-styles">
-
+      gfdt-matchup-list-item {
+        padding: 20px;
+      }
     </style>
 
+    <div>
+      <template is="dom-repeat" items="[[matchups]]" as="matchup">
+        <gfdt-matchup-list-item matchup="[[matchup]]"></gfdt-matchup-list-item>
+      </template>
+    </div>
 
-    <template is="dom-repeat" items="[[matchups]]" as="matchups">
-      <gfdt-matchup-list-item></gfdt-matchup-list-item>
-    </template>
+  </template>
+  <script>
+    class MatchupList extends FormatterMixin(ReduxMixin(Polymer.Element)) {
+      constructor() {
+        super()
+        this.matchupService = new MatchupService()
+        //this.permissionHelper = new PermissionHelper()
+      }
 
-    <script>
-      class MatchupList extends ReduxMixin(Polymer.Element) {
-        static get is() { return 'gfdt-battle-submission-form'; }
-        static get actions() {
-          return {
+      ready() {
+        super.ready()
+        this.refreshMine()
+      }
+
+      async refreshMine() {
+        try {
+          const response = await this.matchupService.getMine()
+          if (response.ok) {
+            const data = await response.json()
+            this.dispatch('updateMatchups', data.matchups)
           }
-        }
-        static get properties() {
-          return {
-            matchups: {
-              type: Array,
-              statePath: 'matchups'
-            }
-          }
-        }
-
-        static get observers() {
-          return [
-          ]
+        } catch (e) {
+          console.error('error activating tournaments', e)
         }
       }
-      window.customElements.define(BattleSubmissionForm.is, BattleSubmissionForm)
-    </script>
-  </template>
+
+      static get is() { return 'gfdt-matchup-list'; }
+      static get actions() {
+        return {
+          updateMatchups(matchups) {
+            return {
+              matchups,
+              type: 'updateMatchups'
+            }
+          },
+        }
+      }
+      static get properties() {
+        return {
+          matchups: {
+            type: Array,
+            statePath: 'matchups'
+          }
+        }
+      }
+
+      static get observers() {
+        return [
+        ]
+      }
+    }
+    window.customElements.define(MatchupList.is, MatchupList)
+  </script>
 </dom-module>

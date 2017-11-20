@@ -1,32 +1,91 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../shared-styles.html">
 <link rel="import" href="../reduxMixin.html">
+<link rel="import" href="../vendor/lodash.html">
+<link rel="import" href="../mixins/formatterMixin.html">
 
 <dom-module id="gfdt-matchup-list-item">
   <template>
     <style include="shared-styles">
+      .winner {
+        color: green
+      }
 
+      .loser {
+        color: red
+      }
+
+      .draw {
+        color: blue
+      }
     </style>
-    Matchup!
-    <script>
-      class MatchupListItem extends ReduxMixin(Polymer.Element) {
-        static get is() { return 'gfdt-battle-submission-form'; }
-        static get actions() {
-          return {
-          }
-        }
-        static get properties() {
-          return {
+    <div>
+      [[formatDate(matchup.startDate)]] - [[formatDate(matchup.endDate)]]
+    </div>
+    <div>
+      <span class$="[[getPlayerStyle(matchup.players.0)]]">[[matchup.players.0.user]] ({{getPlayerScore(matchup.players.0)}})</span>
+      <div>
+        {{playerChosenSongField(matchup.players.0.user, 'title')}} by [[playerChosenSongField(matchup.players.0.user, 'artist')]]
+        <paper-button>Submit Score</paper-button>
+      </div>
+    </div>
+    <div><span>VS</span></div>
+    <div>
+      <span class$="[[getPlayerStyle(matchup.players.1)]]">[[matchup.players.1.user]] ({{getPlayerScore(matchup.players.1)}})</span>
+      <div>
+        [[playerChosenSongField(matchup.players.1.user, 'title')]] by [[playerChosenSongField(matchup.players.1.user, 'artist')]]
+      </div>
+    </div>
+  </template>
+  <script>
+    class MatchupListItem extends FormatterMixin(ReduxMixin(Polymer.Element)) {
+      isVerified(verification) {
+        return !!verification
+      }
 
-          }
-        }
+      playerChosenSongField(user, field) {
+        const battle = _.find(this.matchup.battles, { chooser: user })
+        return !!battle && !!battle.song ? battle.song[field] : ''
+      }
 
-        static get observers() {
-          return [
-          ]
+      getPlayerScore(player) {
+        if (!this.isVerified(this.matchup.verification)) return '??'
+        return player.score
+      }
+
+      getPlayerStyle(player) {
+        if (!this.isVerified(this.matchup.verification)) return
+
+        const otherGuysScore = this.matchup.players.filter(p => p.user !== player.user)[0].score
+
+        if (player.score === otherGuysScore) return 'draw'
+        if (player.score > otherGuysScore) return 'winner'
+        return 'loser'
+      }
+
+      static get is() { return 'gfdt-matchup-list-item'; }
+      static get actions() {
+        return {
         }
       }
-      window.customElements.define(BattleSubmissionForm.is, BattleSubmissionForm)
-    </script>
-  </template>
+      static get properties() {
+        return {
+          matchup: {
+            type: Object
+          },
+          isMatchupVerified: {
+            type: Boolean,
+            computed: 'isVerified(matchup.verification)'
+          }
+        }
+      }
+
+      static get observers() {
+        return [
+        ]
+      }
+    }
+    window.customElements.define(MatchupListItem.is, MatchupListItem)
+  </script>
 </dom-module>
