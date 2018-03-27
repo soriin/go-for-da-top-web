@@ -1,16 +1,38 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../shared-styles.html">
 <link rel="import" href="../reduxMixin.html">
+<link rel="import" href="./song-card.html">
 
 <dom-module id="gfdt-battle">
   <template>
     <style include="shared-styles">
 
     </style>
-
+    <div>
+      <gfdt-song-card song="[[battle.song]]"></gfdt-song-card>
+      <div hidden$="!entryOne">
+        <span>[[entryOne.user.displayName]]</span>
+        <span>[[entryOne.exScore]]</span>
+        <img src$="[[entryOne.imageProofUrl]]" width="50" height="50"></img>
+      </div>
+      <div hidden$="!entryTwo">
+        <span>[[entryTwo.user.displayName]]</span>
+        <span>[[entryTwo.exScore]]</span>
+        <img src$="[[entryTwo.imageProofUrl]]" width="50" height="50"></img>
+      </div>
+    </div>
   </template>
   <script>
     class Battle extends ReduxMixin(Polymer.Element) {
+      getEntry(battle, index) {
+        var entries = Object.keys(battle.entries)
+        if (entries[index]) {
+          let entry = battle.entries[entries[index]]
+          entry.user = {displayName: 'todo'}
+          return entry
+        }
+      }
+
       static get is() { return 'gfdt-battle'; }
       static get actions() {
         return {
@@ -18,7 +40,18 @@
       }
       static get properties() {
         return {
-
+          battle: {
+            type: Object,
+            statePath: 'selectedBattle'
+          },
+          entryOne: {
+            type: Object,
+            computed: 'getEntry(battle, 0)'
+          },
+          entryTwo: {
+            type: Object,
+            computed: 'getEntry(battle, 1)'
+          }
         }
       }
 

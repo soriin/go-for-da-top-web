@@ -7,7 +7,10 @@
     tournaments: [],
     tournamentFilter: 'all',
     matchups: [],
-    routeSubject: new Rx.Subject()
+    routeSubject: new Rx.Subject(),
+    users: [],
+    selectedMatchup: null,
+    selectedBattle: null,
   }
 
   const addEntrant = (state, tournamentId, userId) => {
@@ -80,6 +83,9 @@
         break
       case 'changeTournamentFilter':
         return Object.assign({}, state, { tournamentFilter: action.filter || 'all' })
+        break
+      case 'selectMatchupBattle':
+        return {...state, selectedBattle: action.battle, selectedMatchup: action.matchup}
         break
       default:
         throw Error('unknown action type')

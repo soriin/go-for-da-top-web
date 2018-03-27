@@ -21,52 +21,97 @@
       }
     </style>
     <div>
-      [[formatDate(matchup.startDate)]] - [[formatDate(matchup.endDate)]]
+      <h2>[[formatDate(matchup.startDate)]] - [[formatDate(matchup.endDate)]]</h2>
     </div>
-    <div>
-      <span class$="[[getPlayerStyle(matchup.players.0)]]">[[matchup.players.0.user]] ({{getPlayerScore(matchup.players.0)}})</span>
+    <div style="display:flex">
       <div>
-        {{playerChosenSongField(matchup.players.0.user, 'title')}} by [[playerChosenSongField(matchup.players.0.user, 'artist')]]
-        <paper-button>Submit Score</paper-button>
+        <span class$="[[getPlayerStyle(battleOne.chooser)]]">[[battleOne.chooser.displayName]] ({{getPlayerScore(battleOne.chooser)}})</span>
+        <div>
+          [[getSongString(battleOne.song)]]
+          <div hidden$="[[isMatchupVerified]]">
+            <paper-button hidden$="[[!isSongSelected(battleOne)]]" on-tap="redirectToBattlePage" data-battle$="[[battleOne]]">Submit Score</paper-button>
+            <paper-button hidden$="[[!canPickSong(battleOne)]]" on-tap="redirectToSongSelection(battleOne)">Pick Song</paper-button>
+          </div>
+          <paper-button hidden$="[[!isMatchupVerified]]" on-tap="redirectToBattlePage" data-battle$="[[battleOne]]">View Results</paper-button>
+        </div>
       </div>
-    </div>
-    <div><span>VS</span></div>
-    <div>
-      <span class$="[[getPlayerStyle(matchup.players.1)]]">[[matchup.players.1.user]] ({{getPlayerScore(matchup.players.1)}})</span>
+      <div style="padding: 0 20px 0 20px">
+        <span>VS</span>
+      </div>
       <div>
-        [[playerChosenSongField(matchup.players.1.user, 'title')]] by [[playerChosenSongField(matchup.players.1.user, 'artist')]]
+        <span class$="[[getPlayerStyle(battleTwo.chooser)]]">[[battleTwo.chooser.displayName]] ({{getPlayerScore(battleTwo.chooser)}})</span>
+        <div>
+          [[getSongString(battleTwo.song)]]
+          <div hidden$="[[isMatchupVerified]]">
+            <paper-button hidden$="[[!isSongSelected(battleTwo)]]" on-tap="redirectToBattlePage" data-battle$="[[battleTwo]]">Submit Score</paper-button>
+            <paper-button hidden$="[[!canPickSong(battleTwo)]]" on-tap="redirectToSongSelection(battleTwo)">Pick Song</paper-button>
+          </div>
+          <paper-button hidden$="[[!isMatchupVerified]]" on-tap="redirectToBattlePage" data-battle$="[[battleTwo]]">View Results</paper-button>
+        </div>
       </div>
     </div>
   </template>
   <script>
     class MatchupListItem extends FormatterMixin(ReduxMixin(Polymer.Element)) {
-      isVerified(verification) {
-        return !!verification
+      isVerified() {
+        return !!this.matchup.verification
       }
 
-      playerChosenSongField(user, field) {
-        const battle = _.find(this.matchup.battles, { chooser: user })
-        return !!battle && !!battle.song ? battle.song[field] : ''
+      isSongSelected(battle) {
+        return !!battle.song
+      }
+
+      canPickSong(battle) {
+        if (battle.song) return false
+        if (battle.chooser._id === Store.getState().user._id) {
+          return true
+        }
+        return false
+      }
+
+      getSongString(song) {
+        if (song) {
+          return `${song.title} by ${song.artist}`
+        }
+        return 'Song Not Chosen, Yet'
       }
 
       getPlayerScore(player) {
-        if (!this.isVerified(this.matchup.verification)) return '??'
-        return player.score
+        if (!this.isVerified()) return '??'
+        return this.matchup.players.filter(p => p.user._id === player._id)[0].score
       }
 
       getPlayerStyle(player) {
-        if (!this.isVerified(this.matchup.verification)) return
+        if (!this.isVerified()) return
 
-        const otherGuysScore = this.matchup.players.filter(p => p.user !== player.user)[0].score
+        const thisGuysScore = this.matchup.players.filter(p => p.user._id === player._id)[0].score
+        const otherGuysScore = this.matchup.players.filter(p => p.user._id !== player._id)[0].score
 
-        if (player.score === otherGuysScore) return 'draw'
-        if (player.score > otherGuysScore) return 'winner'
+        if (thisGuysScore === otherGuysScore) return 'draw'
+        if (thisGuysScore > otherGuysScore) return 'winner'
         return 'loser'
+      }
+
+      getBattle(matchup, index) {
+        return matchup.battles[index]
+      }
+
+      redirectToBattlePage(ev) {
+        const {battle} = ev.target.dataset
+        this.dispatch('selectBattle', this.matchup, JSON.parse(battle))
+        Store.getState().routeSubject.next('matchups')
       }
 
       static get is() { return 'gfdt-matchup-list-item'; }
       static get actions() {
         return {
+          selectBattle(matchup, battle) {
+            return {
+              matchup,
+              battle,
+              type: 'selectMatchupBattle'
+            }
+          },
         }
       }
       static get properties() {
@@ -77,6 +122,14 @@
           isMatchupVerified: {
             type: Boolean,
             computed: 'isVerified(matchup.verification)'
+          },
+          battleOne: {
+            type: Object,
+            computed: 'getBattle(matchup, 0)'
+          },
+          battleTwo: {
+            type: Object,
+            computed: 'getBattle(matchup, 1)'
           }
         }
       }

@@ -81,7 +81,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <a name="login" href="[[rootPath]]login">Profile</a>
           </div>
           <div hidden$="[[!user]]">
-              <a name="matchups" href="[[rootPath]]matchups">My Matchups</a>
+              <a href="[[rootPath]]matchups">My Matchups</a>
               <a name="tournaments" href="[[rootPath]]tournaments">Tournaments</a>
           </div>
           
@@ -91,7 +91,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <!-- Main content -->
       <app-header-layout has-scrolling-region>
 
-        <app-header slot="header" condenses reveals effects="waterfall">
+        <app-header slot="header" condenses reveals effects="waterfaÍll">
           <app-toolbar>
             <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
             <div main-title>Go For Da Top</div>
@@ -103,7 +103,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <gfdt-login name="login"></gfdt-login>
           <gfdt-tournaments name="tournaments"></gfdt-tournaments>
           <gfdt-tournament-form name="create-tournament"></gfdt-tournament-form>
-          <gfdt-matchup-list name="matchups"></gfdt-matchup-list>
+          <gfdt-matchup-dashboard name="matchups"></gfdt-matchup-dashboard>
         </iron-pages>
       </app-header-layout>
       <paper-snackbar></paper-snackbar>

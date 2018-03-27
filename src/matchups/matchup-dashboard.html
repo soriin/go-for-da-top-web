@@ -3,8 +3,10 @@
 <link rel="import" href="../reduxMixin.html">
 <link rel="import" href="../services/matchupService.html">
 <link rel="import" href="./matchup-list-item.html">
+<link rel="import" href="./battle.html">
+<link rel="import" href="./battle-submission-form.html">
 
-<dom-module id="gfdt-matchup-list">
+<dom-module id="gfdt-matchup-dashboard">
   <template>
     <style include="shared-styles">
       gfdt-matchup-list-item {
@@ -13,6 +15,16 @@
     </style>
 
     <div>
+      <template is="dom-if" if="[[selectedBattle]]">
+        <template is="dom-if" if="[[selectedMatchup.verification]]">
+          <gfdt-battle></gfdt-battle>
+        </template>
+        <template is="dom-if" if="[[!selectedMatchup.verification]]">
+          <gfdt-battle-submission-form></gfdt-battle-submission-form>
+        </template>
+      </template>
+    </div>
+    <div hidden$="[[selectedBattle]]">
       <template is="dom-repeat" items="[[matchups]]" as="matchup">
         <gfdt-matchup-list-item matchup="[[matchup]]"></gfdt-matchup-list-item>
       </template>
@@ -20,7 +32,7 @@
 
   </template>
   <script>
-    class MatchupList extends FormatterMixin(ReduxMixin(Polymer.Element)) {
+    class MatchupDashboard extends FormatterMixin(ReduxMixin(Polymer.Element)) {
       constructor() {
         super()
         this.matchupService = new MatchupService()
@@ -44,7 +56,7 @@
         }
       }
 
-      static get is() { return 'gfdt-matchup-list'; }
+      static get is() { return 'gfdt-matchup-dashboard'; }
       static get actions() {
         return {
           updateMatchups(matchups) {
@@ -60,6 +72,14 @@
           matchups: {
             type: Array,
             statePath: 'matchups'
+          },
+          selectedBattle: {
+            type: Object,
+            statePath: 'selectedBattle'
+          },
+          selectedMatchup: {
+            type: Object,
+            statePath: 'selectedMatchup'
           }
         }
       }
@@ -69,6 +89,6 @@
         ]
       }
     }
-    window.customElements.define(MatchupList.is, MatchupList)
+    window.customElements.define(MatchupDashboard.is, MatchupDashboard)
   </script>
 </dom-module>
