@@ -4,20 +4,21 @@
 <script>
   const initialState = {
     user: null,
+    users: [],
     tournaments: [],
     tournamentFilter: 'all',
+    songs: [],
     matchups: [],
     routeSubject: new Rx.Subject(),
-    users: [],
     selectedMatchup: null,
     selectedBattle: null,
   }
 
   const addEntrant = (state, tournamentId, userId) => {
-    const newState = {...state}
+    const newState = Object.assign({}, state)
     newState.tournaments = state.tournaments.map((t) => {
       if (t._id === tournamentId) {
-        const newT = { ...t }
+        const newT = Object.assign({}, t)
         newT.entrants = [...newT.entrants, userId]
         return newT
       }
@@ -27,10 +28,10 @@
   }
 
   const removeEntrant = (state, tournamentId, userId) => {
-    const newState = {...state}
+    const newState = Object.assign({}, state)
     newState.tournaments = state.tournaments.map((t) => {
       if (t._id === tournamentId) {
-        const newT = { ...t }
+        const newT = Object.assign({}, t)
         newT.entrants = newT.entrants.filter((x) => x !== userId )
         return newT
       }
@@ -85,7 +86,7 @@
         return Object.assign({}, state, { tournamentFilter: action.filter || 'all' })
         break
       case 'selectMatchupBattle':
-        return {...state, selectedBattle: action.battle, selectedMatchup: action.matchup}
+        return Object.assign({}, state, {selectedBattle: action.battle, selectedMatchup: action.matchup})
         break
       default:
         throw Error('unknown action type')
