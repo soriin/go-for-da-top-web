@@ -1,5 +1,12 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/paper-dropdown/paper-dropdown.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/fade-in-animation.html">
+<link rel="import" href="../services/matchupService.html">
 <link rel="import" href="../shared-styles.html">
 <link rel="import" href="../reduxMixin.html">
 <link rel="import" href="../vendor/lodash.html">
@@ -30,7 +37,7 @@
           [[getSongString(battleOne.song)]]
           <div hidden$="[[isMatchupVerified]]">
             <paper-button hidden$="[[!isSongSelected(battleOne)]]" on-tap="redirectToBattlePage" data-battle$="[[battleOne]]">Submit Score</paper-button>
-            <paper-button hidden$="[[!canPickSong(battleOne)]]" on-tap="redirectToSongSelection(battleOne)">Pick Song</paper-button>
+            <paper-button hidden$="[[!canPickSong(battleOne)]]" on-tap="openSongSelectionDialog" data-battle$="[[battleOne]]">Pick Song</paper-button>
           </div>
           <paper-button hidden$="[[!isMatchupVerified]]" on-tap="redirectToBattlePage" data-battle$="[[battleOne]]">View Results</paper-button>
         </div>
@@ -44,15 +51,31 @@
           [[getSongString(battleTwo.song)]]
           <div hidden$="[[isMatchupVerified]]">
             <paper-button hidden$="[[!isSongSelected(battleTwo)]]" on-tap="redirectToBattlePage" data-battle$="[[battleTwo]]">Submit Score</paper-button>
-            <paper-button hidden$="[[!canPickSong(battleTwo)]]" on-tap="redirectToSongSelection(battleTwo)">Pick Song</paper-button>
+            <paper-button hidden$="[[!canPickSong(battleTwo)]]" on-tap="openSongSelectionDialog" data-battle$="[[battleTwo]]">Pick Song</paper-button>
           </div>
           <paper-button hidden$="[[!isMatchupVerified]]" on-tap="redirectToBattlePage" data-battle$="[[battleTwo]]">View Results</paper-button>
         </div>
       </div>
+      <paper-dialog id="dropdownDialog" entry-animation="fade-in-animation" exit-animation="fade-out-animation" no-cancel-on-outside-click="true">
+        <h2>Choose Your Battle Song</h2>
+        <paper-dropdown id="selectedSong" label="Select a song" value="{{value}}" searchable>
+          <template is="dom-repeat" items="[[songs]]" as="song">
+            <paper-item value$="[[song]]">[[song.title]] - [[song.artist]] ([[song.rating]])</paper-item>
+          </template>
+        </paper-dropdown>
+        <div class="buttons">
+          <paper-button dialog-dismiss>Cancel</paper-button>
+          <paper-button dialog-confirm autofocus on-tap="saveSongSelection">Save</paper-button>
+        </div>
+      </paper-dialog>
     </div>
   </template>
   <script>
     class MatchupListItem extends FormatterMixin(ReduxMixin(Polymer.Element)) {
+      constructor() {
+        super()
+        this.matchupSvc = new MatchupService()
+      }
       isVerified() {
         return !!this.matchup.verification
       }
@@ -102,6 +125,15 @@
         Store.getState().routeSubject.next('matchups')
       }
 
+      openSongSelectionDialog(ev) {
+        this.$.dropdownDialog.open()
+      }
+
+      async saveSongSelection() {
+        const songId = JSON.parse(this.$.selectedSong.value)._id
+        await this.matchupSvc.chooseSong(this.matchup._id, songId)
+      }
+
       static get is() { return 'gfdt-matchup-list-item'; }
       static get actions() {
         return {
@@ -130,6 +162,10 @@
           battleTwo: {
             type: Object,
             computed: 'getBattle(matchup, 1)'
+          },
+          songs: {
+            type: Array,
+            statePath: 'songs'
           }
         }
       }

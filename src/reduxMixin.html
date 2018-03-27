@@ -76,6 +76,10 @@
         })
         return Object.assign({}, state, { matchups: updatedMatchups })
         break;
+      case 'updateSongs':
+        const songs = action.songs
+        return Object.assign({}, state, { songs: songs })
+        break;
       case 'addEntrant':
         return addEntrant(state, action.tournamentId, action.userId)
         break

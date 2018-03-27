@@ -20,10 +20,17 @@
     "iron-input": "^2.0.0",
     "paper-input": "^2.0.1",
     "vaadin-date-picker": "^2.0.2",
-    "paper-snackbar": "justinribeiro/paper-snackbar#^2.0.2"
+    "paper-snackbar": "justinribeiro/paper-snackbar#^2.0.2",
+    "paper-dialog": "^2.1.1",
+    "paper-listbox": "^2.1.0",
+    "paper-item": "^2.1.0",
+    "paper-dropdown": "pushkar8723/paper-dropdown#^2.0.1"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0"
   },
-  "private": true
+  "private": true,
+  "resolutions": {
+    "neon-animation": "^2.0.2"
+  }
 }

@@ -2,6 +2,7 @@
 <link rel="import" href="../shared-styles.html">
 <link rel="import" href="../reduxMixin.html">
 <link rel="import" href="../services/matchupService.html">
+<link rel="import" href="../services/songService.html">
 <link rel="import" href="./matchup-list-item.html">
 <link rel="import" href="./battle.html">
 <link rel="import" href="./battle-submission-form.html">
@@ -36,12 +37,14 @@
       constructor() {
         super()
         this.matchupService = new MatchupService()
+        this.songSvc = new SongService()
         //this.permissionHelper = new PermissionHelper()
       }
 
       ready() {
         super.ready()
         this.refreshMine()
+        this.refreshSongs()
       }
 
       async refreshMine() {
@@ -56,6 +59,19 @@
         }
       }
 
+      async refreshSongs() {
+        try {
+          const response = await this.songSvc.getAll()
+          if (response.ok) {
+            const data = await response.json()
+            this.dispatch('updateSongs', data)
+            this.songs = data
+          }
+        } catch (e) {
+          console.error('error updating songs', e)
+        }
+      }
+
       static get is() { return 'gfdt-matchup-dashboard'; }
       static get actions() {
         return {
@@ -63,6 +79,12 @@
             return {
               matchups,
               type: 'updateMatchups'
+            }
+          },
+          updateSongs(songs) {
+            return {
+              songs,
+              type: 'updateSongs'
             }
           },
         }
