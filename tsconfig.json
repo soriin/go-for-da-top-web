@@ -4,10 +4,16 @@
     "removeComments": true,
     "experimentalDecorators": true,
     "jsx": "react",
-    "outDir": "dist"
+    "sourceMap": true,
+    "outDir": "dist",
+    "module": "es6",
+    "moduleResolution": "node"
   },
   "exclude": [
     "node_modules",
     "static"
+  ],
+  "files": [
+    "./node_modules/typescript/lib/lib.es6.d.ts"
   ]
 }

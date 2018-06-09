@@ -1,40 +1,43 @@
 {
-  "name": "mobx-react-typescript-boilerplate",
-  "version": "1.0.0",
-  "description": "Boilerplate for MobX + React project with Typescript, ES6 compilation and hot code reloading",
+  "name": "go-for-da-top-web",
+  "version": "0.1.0",
+  "description": "Dance Dance Revolution tournament tracker and planner",
   "scripts": {
     "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mobxjs/mobx-react-typescript-boilerplate.git"
+    "url": "https://github.com/soriin/go-for-da-top-web.git"
   },
   "keywords": [
-    "react",
-    "reactjs",
-    "boilerplate",
-    "mobx",
-    "starter-kit"
+    "ddr",
+    "dancedancerevolution",
+    "ddrx",
+    "gofordatop"
   ],
-  "author": "Michel Weststrate <mweststrate@gmail.com> (http://github.com/mweststrate)",
-  "license": "MIT",
+  "author": "Elliot Fisher",
   "bugs": {
     "url": "https://github.com/mobxjs/mobx/issues"
   },
-  "homepage": "http://mobxjs.github.com/mobx",
+  "homepage": "https://goforda.top",
   "devDependencies": {
-    "@types/react": "^15.0.39",
-    "@types/react-dom": "^15.5.1",
-    "awesome-typescript-loader": "^3.2.1",
-    "typescript": "^2.4.2",
-    "webpack": "^3.0.0",
-    "webpack-dev-server": "^2.6.1"
+    "@types/core-js": "^2.5.0",
+    "@types/react": "^16.3.17",
+    "@types/react-dom": "^16.0.6",
+    "@types/react-router-dom": "^4.2.7",
+    "awesome-typescript-loader": "^5.0.0",
+    "node-sass": "^4.9.0",
+    "sass-loader": "^7.0.3",
+    "typescript": "^2.9.1",
+    "webpack": "^4.12.0",
+    "webpack-dev-server": "^3.1.4"
   },
   "dependencies": {
-    "mobx": "^3.2.1",
-    "mobx-react": "^4.2.2",
-    "mobx-react-devtools": "^4.2.15",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "mobx": "^5.0.0",
+    "mobx-react": "^5.2.2",
+    "mobx-react-devtools": "^5.0.1",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "react-router-dom": "^4.3.1"
   }
 }

@@ -1,29 +1,47 @@
-var path = require('path');
-var webpack = require('webpack');
+const path = require('path');
+const webpack = require('webpack')
+
+function getEntrySources(sources) {
+  if (process.env.NODE_ENV !== 'production') {
+      sources.push('webpack-dev-server/client?http://local.goforda.top:9000');
+      sources.push('webpack/hot/only-dev-server');
+  }
+
+  return sources;
+}
 
 module.exports = {
-  devtool: 'eval',
-  entry: [
-    'webpack-dev-server/client?http://localhost:3000',
+  entry: getEntrySources([
     './src/index'
-  ],
-  output: {
-    path: path.join(__dirname, 'dist'),
-    filename: 'app.js',
-    publicPath: '/static/'
+  ]),
+  devtool: 'eval',
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'awesome-typescript-loader',
+        exclude: /node_modules/
+      },
+      {
+        test: /\.scss$/,
+        use: [
+            "style-loader", // creates style nodes from JS strings
+            "css-loader", // translates CSS into CommonJS
+            "sass-loader" // compiles Sass to CSS
+        ]
+      }
+    ]
   },
   resolve: {
-    extensions: ['.js', '.ts', '.tsx']
+    extensions: [ '.tsx', '.ts', '.js' ]
   },
-  module: {
-    loaders: [{
-      test: /\.tsx?$/,
-      use: [
-        {
-          loader: "awesome-typescript-loader"
-        },
-      ],
-      include: path.join(__dirname, 'src')
-    }]
-  }
+  output: {
+    filename: 'app.js',
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/dist'
+  },
+  mode: 'development',
+  plugins: [
+    new webpack.HotModuleReplacementPlugin()
+  ]
 };
