@@ -5,9 +5,9 @@ import { observer } from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
 import './index.scss'
+import AppState from './states/appState'
+import Login from './pages/login'
 declare var module: any
-class AppState {
-}
 
 @observer
 class App extends React.Component<{ appState: AppState }, {}> {
@@ -33,7 +33,7 @@ class App extends React.Component<{ appState: AppState }, {}> {
               <Route exact={true} path='/' render={() => 'Welcome home'} />
               <Route path='/matches' render={() => 'Matches'} />
               <Route path='/tournaments' render={() => 'Tournaments'} />
-              <Route path='/login' render={() => 'Login'} />
+              <Route path='/login' component={Login} />
               <Route path='/profile' render={() => 'Profile'} />
             </div>
           </div>
