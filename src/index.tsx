@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
 import './index.scss'
-
+declare var module: any
 class AppState {
 }
 
@@ -16,23 +16,25 @@ class App extends React.Component<{ appState: AppState }, {}> {
       <div>
         <Router>
           <div>
+            <div className='gfdt-nav-top'>
+              <div className='gfdt-nav-top-left'>Go For Da Top</div>
+              <div className='gfdt-nav-top-right float-right'>
+                <Link to='/login'>Login</Link>
+                <Link to='/profile'>Profile</Link>
+              </div>
+            </div>
             <div className='gfdt-nav-left'>
               <Link to='/'>Home</Link>
               <Link to='/matches'>My Matches</Link>
               <Link to='/tournaments'>Tournaments</Link>
-            </div>
-            <div className='gfdt-nav-top'>
-              <div className='gfdt-nav-top-left'>Go For Da Top</div>
-              <div className='gfdt-nav-top-right'>
-                Login
-                Profile
-              </div>
             </div>
 
             <div className='gfdt-main'>
               <Route exact={true} path='/' render={() => 'Welcome home'} />
               <Route path='/matches' render={() => 'Matches'} />
               <Route path='/tournaments' render={() => 'Tournaments'} />
+              <Route path='/login' render={() => 'Login'} />
+              <Route path='/profile' render={() => 'Profile'} />
             </div>
           </div>
         </Router>
@@ -44,3 +46,10 @@ class App extends React.Component<{ appState: AppState }, {}> {
 
 const appState = new AppState();
 ReactDOM.render(<App appState={appState} />, document.getElementById('root'));
+
+// webpack Hot Module Replacement API
+// if (module.hot) {
+//   module.hot.accept('./src/index', () => {
+//     ReactDOM.render(<App appState={appState} />, document.getElementById('root'));
+//   })
+// }

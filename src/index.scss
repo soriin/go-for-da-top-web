@@ -1,5 +1,29 @@
+.gfdt-nav-top {
+  color: purple;
+  width: 100%;
+  background-color: lightblue;
+
+  .gfdt-nav-top-left {
+    display: inline-block;
+    left: 0px;
+  }
+
+  .gfdt-nav-top-right {
+    
+  }
+
+}
+
 .gfdt-nav-left {
+  display: inline-grid;
+  background-color: lightslategray;
+  width: 175px;
   a {
       color: green
-    }
   }
+}
+
+.gfdt-main {
+  background-color: lightgreen;
+  display: inline-flex;
+}
