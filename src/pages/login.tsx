@@ -1,14 +1,32 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { observable } from 'mobx';
 import { observer } from 'mobx-react';
-import AppState from '../states/appState'
+import * as React from 'react';
+import { Redirect } from 'react-router';
+
+import AppState, { IAppState } from '../states/appState';
 
 @observer
-export default class Login extends React.Component<{ appState: AppState }, {}> {
+export default class Login extends React.Component<{ appState: IAppState }, {}> {
+  constructor(props) {
+    super(props)
+    this.handleSignIn = this.handleSignIn.bind(this)
+  }
+  handleSignIn() {
+    this.props.appState.user = {name: 'test'}
+  }
+
   render() {
+    const user = this.props.appState.user
+    let body: JSX.Element
+
+    if (user) {
+      body = <Redirect to='profile' />
+    } else {
+      body = <button className="btn btn-primary" onClick={this.handleSignIn}>Sign In</button>
+    }
     return (
-      <input type='text'/>
+      <div>
+          {body}
+      </div>
     )
   }
     

@@ -1,16 +1,20 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import './index.scss';
+
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
-import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
-import './index.scss'
-import AppState from './states/appState'
-import Login from './pages/login'
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
+
+import Login from './pages/login';
+import Profile from './pages/profile';
+import AppState, { IAppState } from './states/appState';
+
 declare var module: any
 
 @observer
-class App extends React.Component<{ appState: AppState }, {}> {
+class App extends React.Component<{ appState: IAppState }, {}> {
   render() {
     return (
       <div>
@@ -33,8 +37,12 @@ class App extends React.Component<{ appState: AppState }, {}> {
               <Route exact={true} path='/' render={() => 'Welcome home'} />
               <Route path='/matches' render={() => 'Matches'} />
               <Route path='/tournaments' render={() => 'Tournaments'} />
-              <Route path='/login' component={Login} />
-              <Route path='/profile' render={() => 'Profile'} />
+              <Route path='/login' render={props => (
+                <Login appState={appState} {...props} />
+              )} />
+              <Route path='/profile' render={props => (
+                <Profile appState={appState} {...props} />
+              )} />
             </div>
           </div>
         </Router>
