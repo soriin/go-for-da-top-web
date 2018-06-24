@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { Redirect } from 'react-router';
+import { apiBase } from '../config'
 
 import AppState, { IAppState } from '../states/appState';
 
@@ -11,7 +12,7 @@ export default class Login extends React.Component<{ appState: IAppState }, {}> 
     this.handleSignIn = this.handleSignIn.bind(this)
   }
   handleSignIn() {
-    this.props.appState.user = {name: 'test'}
+    window.location.href = `${apiBase}/login/facebook`
   }
 
   render() {

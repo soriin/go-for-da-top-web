@@ -7,9 +7,9 @@ const instance = axios.create({
   timeout: 5000
 })
 
-axios.defaults.headers.common['Authorization'] = authToken
+axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`
 
-const request = (method, url, data, cancelToken?) => {
+const request = (method, url, data?, cancelToken?) => {
   return new Promise(((resolve, reject) => {
     (() => {
       if (method === 'get') {
@@ -28,7 +28,7 @@ const request = (method, url, data, cancelToken?) => {
 }
 
 export default {
-  get: (endpoint, data) => {
+  get: (endpoint, data?) => {
     return request('get', endpoint, data)
   },
   post: (endpoint, data) => {
@@ -37,7 +37,7 @@ export default {
   put: (endpoint, data) => {
     return request('put', endpoint, data)
   },
-  delete: (endpoint, data) => {
-    return request('delete', endpoint, data)
+  delete: (endpoint) => {
+    return request('delete', endpoint)
   }
 }

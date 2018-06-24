@@ -9,12 +9,30 @@ import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 
 import Login from './pages/login';
 import Profile from './pages/profile';
-import AppState, { IAppState } from './states/appState';
+import AppState, { IAppState, IUser } from './states/appState';
+import { authToken } from './config'
+import api from './utils/api'
+import { Endpoints } from './utils/endpoints'
 
 declare var module: any
 
 @observer
 class App extends React.Component<{ appState: IAppState }, {}> {
+  constructor(props) {
+    super(props)
+
+    console.log('auth', authToken)
+    if (authToken) {
+      appState.isLoadingUser = true
+      api.get(Endpoints.getCurrentUser)
+        .then((data : IUser) => {
+          appState.user = data
+          appState.isLoadingUser = false
+        })
+        .catch((err) => console.log)
+        
+    }
+  }
   render() {
     return (
       <div>
