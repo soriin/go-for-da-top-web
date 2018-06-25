@@ -1,6 +1,5 @@
 import './index.scss';
 
-import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 import * as React from 'react';
@@ -11,31 +10,32 @@ import Login from './pages/login';
 import Profile from './pages/profile';
 import AppState, { IAppState, IUser } from './states/appState';
 import { authToken } from './config'
-import api from './utils/api'
-import { Endpoints } from './utils/endpoints'
-
-declare var module: any
+import UserService from './modules/user/user'
+import handleExpectedError from './utils/unexpectedError';
 
 @observer
 class App extends React.Component<{ appState: IAppState }, {}> {
   constructor(props) {
     super(props)
 
-    console.log('auth', authToken)
     if (authToken) {
-      appState.isLoadingUser = true
-      api.get(Endpoints.getCurrentUser)
+      UserService.getCurrentUser()
         .then((data : IUser) => {
-          appState.user = data
-          appState.isLoadingUser = false
+          this.props.appState.user = data
+          this.props.appState.isUserLoaded = true
+          this.props.appState.isUserLoading = false
         })
-        .catch((err) => console.log)
-        
+        .catch(handleExpectedError)
+    }
+    else {
+      this.props.appState.isUserLoading = false
     }
   }
   render() {
+    
     return (
       <div>
+        <DevTools />
         <Router>
           <div>
             <div className='gfdt-nav-top'>
@@ -56,15 +56,14 @@ class App extends React.Component<{ appState: IAppState }, {}> {
               <Route path='/matches' render={() => 'Matches'} />
               <Route path='/tournaments' render={() => 'Tournaments'} />
               <Route path='/login' render={props => (
-                <Login appState={appState} {...props} />
+                <Login appState={this.props.appState} {...props} />
               )} />
               <Route path='/profile' render={props => (
-                <Profile appState={appState} {...props} />
+                <Profile appState={this.props.appState} {...props} />
               )} />
             </div>
           </div>
         </Router>
-        <DevTools />
       </div>
     );
   }

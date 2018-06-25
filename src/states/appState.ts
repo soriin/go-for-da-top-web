@@ -1,19 +1,31 @@
+import { IUser } from './appState';
 import { observable } from 'mobx';
 
 export default class AppState implements IAppState {
-  @observable user : {name}
-  @observable isLoadingUser: boolean
+  @observable user : IUser
+  @observable isUserLoading: boolean
+  @observable isUserLoaded: boolean
+
   constructor() {
-    this.user = null
-    this.isLoadingUser = false
+    this.isUserLoading = true
+    this.isUserLoaded = false
+
+    this.user = {
+      realName: '',
+      displayName: '',
+      isAdmin: false
+    }
   }
 }
 
 export interface IAppState {
   user: IUser,
-  isLoadingUser: boolean
+  isUserLoading: boolean
+  isUserLoaded: boolean
 }
 
 export interface IUser {
-  name: string
+  realName: string,
+  displayName: string,
+  isAdmin: boolean
 }

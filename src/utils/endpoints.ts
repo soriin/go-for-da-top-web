@@ -1,3 +1,3 @@
 export enum Endpoints {
-  getCurrentUser = '/user/me'
+  getCurrentUser = '/users/me'
 }

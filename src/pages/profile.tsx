@@ -12,8 +12,10 @@ export default class Profile extends React.Component<{appState: IAppState}> {
 
   render() {
     let body: JSX.Element
-    if (this.props.appState.user) {
-      body = <span>{this.props.appState.user.name}</span>
+    if (this.props.appState.isUserLoading) {
+      body = <span>Loading...</span>
+    } else if (this.props.appState.isUserLoaded) {
+      body = <span>{this.props.appState.user.realName}</span>
     } else {
       body = <Redirect to='login' />
     }
