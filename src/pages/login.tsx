@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Redirect } from 'react-router';
 import { apiBase } from '../config'
 
-import AppState, { IAppState } from '../states/appState';
+import AppState, { IAppState, DataState } from '../states/appState';
 
 @observer
 export default class Login extends React.Component<{ appState: IAppState }, {}> {
@@ -12,13 +12,14 @@ export default class Login extends React.Component<{ appState: IAppState }, {}> 
     this.handleSignIn = this.handleSignIn.bind(this)
   }
   handleSignIn() {
+    this.props.appState.userState = DataState.Loading
     window.location.href = `${apiBase}/login/facebook`
   }
 
   render() {
     let body: JSX.Element
 
-    if (this.props.appState.isUserLoaded) {
+    if (this.props.appState.userState !== DataState.NoData) {
       body = <Redirect to='profile' />
     } else {
       body = <button className="btn btn-primary" onClick={this.handleSignIn}>Sign In</button>

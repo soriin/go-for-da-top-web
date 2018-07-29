@@ -1,14 +1,11 @@
-import { IUser } from './appState';
 import { observable } from 'mobx';
 
 export default class AppState implements IAppState {
   @observable user : IUser
-  @observable isUserLoading: boolean
-  @observable isUserLoaded: boolean
+  @observable userState: DataState
 
   constructor() {
-    this.isUserLoading = true
-    this.isUserLoaded = false
+    this.userState = DataState.NoData
 
     this.user = {
       realName: '',
@@ -20,12 +17,17 @@ export default class AppState implements IAppState {
 
 export interface IAppState {
   user: IUser,
-  isUserLoading: boolean
-  isUserLoaded: boolean
+  userState: DataState
 }
 
 export interface IUser {
   realName: string,
   displayName: string,
   isAdmin: boolean
+}
+
+export enum DataState {
+  NoData,
+  Loading,
+  Loaded
 }

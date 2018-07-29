@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 
 import Login from './pages/login';
 import Profile from './pages/profile';
-import AppState, { IAppState, IUser } from './states/appState';
+import AppState, { IAppState, IUser, DataState } from './states/appState';
 import { authToken } from './config'
 import UserService from './modules/user/user'
 import handleExpectedError from './utils/unexpectedError';
@@ -19,20 +19,23 @@ class App extends React.Component<{ appState: IAppState }, {}> {
     super(props)
 
     if (authToken) {
+      this.props.appState.userState = DataState.Loading
       UserService.getCurrentUser()
         .then((data : IUser) => {
           this.props.appState.user = data
-          this.props.appState.isUserLoaded = true
-          this.props.appState.isUserLoading = false
+          this.props.appState.userState = DataState.Loaded
         })
         .catch(handleExpectedError)
     }
     else {
-      this.props.appState.isUserLoading = false
+      this.props.appState.userState = DataState.NoData
     }
   }
   render() {
-    
+    let loginLink : JSX.Element
+    if (this.props.appState.userState === DataState.NoData) {
+      loginLink = <Link to='/login'>Login</Link>
+    }
     return (
       <div>
         <DevTools />
@@ -41,7 +44,7 @@ class App extends React.Component<{ appState: IAppState }, {}> {
             <div className='gfdt-nav-top'>
               <div className='gfdt-nav-top-left'>Go For Da Top</div>
               <div className='gfdt-nav-top-right float-right'>
-                <Link to='/login'>Login</Link>
+                {loginLink}
                 <Link to='/profile'>Profile</Link>
               </div>
             </div>
