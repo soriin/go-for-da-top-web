@@ -7,6 +7,7 @@ import * as ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 
 import Login from './pages/login';
+import Matches from './pages/matches';
 import Profile from './pages/profile';
 import AppState, { IAppState, IUser, DataState } from './states/appState';
 import { authToken } from './config'
@@ -19,21 +20,19 @@ class App extends React.Component<{ appState: IAppState }, {}> {
     super(props)
 
     if (authToken) {
-      this.props.appState.userState = DataState.Loading
-      UserService.getCurrentUser()
+      UserService.getCurrentUser(this.props.appState.user)
         .then((data : IUser) => {
-          this.props.appState.user = data
-          this.props.appState.userState = DataState.Loaded
+          this.props.appState.user.data = data
         })
         .catch(handleExpectedError)
     }
     else {
-      this.props.appState.userState = DataState.NoData
+      this.props.appState.user.state = DataState.NoData
     }
   }
   render() {
     let loginLink : JSX.Element
-    if (this.props.appState.userState === DataState.NoData) {
+    if (this.props.appState.user.state === DataState.NoData) {
       loginLink = <Link to='/login'>Login</Link>
     }
     return (
@@ -56,7 +55,9 @@ class App extends React.Component<{ appState: IAppState }, {}> {
 
             <div className='gfdt-main'>
               <Route exact={true} path='/' render={() => 'Welcome home'} />
-              <Route path='/matches' render={() => 'Matches'} />
+              <Route path='/matches' render={props => (
+                <Matches appState={this.props.appState} {...props} />
+              )} />
               <Route path='/tournaments' render={() => 'Tournaments'} />
               <Route path='/login' render={props => (
                 <Login appState={this.props.appState} {...props} />

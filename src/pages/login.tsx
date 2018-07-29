@@ -12,14 +12,13 @@ export default class Login extends React.Component<{ appState: IAppState }, {}> 
     this.handleSignIn = this.handleSignIn.bind(this)
   }
   handleSignIn() {
-    this.props.appState.userState = DataState.Loading
     window.location.href = `${apiBase}/login/facebook`
   }
 
   render() {
     let body: JSX.Element
 
-    if (this.props.appState.userState !== DataState.NoData) {
+    if (this.props.appState.user.state !== DataState.NoData) {
       body = <Redirect to='profile' />
     } else {
       body = <button className="btn btn-primary" onClick={this.handleSignIn}>Sign In</button>
