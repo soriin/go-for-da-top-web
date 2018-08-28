@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Dance Dance Revolution tournament tracker and planner",
   "scripts": {
+    "debug": "node --inspect=9230 server.js",
     "start": "node server.js"
   },
   "repository": {
@@ -37,6 +38,7 @@
     "mobx": "^5.0.0",
     "mobx-react": "^5.2.2",
     "mobx-react-devtools": "^5.0.1",
+    "moment": "^2.22.2",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-router-dom": "^4.3.1"

@@ -1,7 +1,9 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { IAppState, DataState } from '../states/appState';
+
 import matchupService from '../modules/matchup/matchup';
+import { DataState, IAppState } from '../states/appState';
+import MatchListItem from './matches/matchListItem';
 
 @observer
 export default class Matches extends React.Component<{appState: IAppState}> {
@@ -15,15 +17,14 @@ export default class Matches extends React.Component<{appState: IAppState}> {
   }
 
   render() {
-    let matchList: JSX.Element[] = []
+    let matchList: JSX.Element[]
     if (this.props.appState.myMatches.state === DataState.Loaded) {
       matchList = this.props.appState.myMatches.data.map((match) => {
-        return <div>{match._id}</div>
+        return <MatchListItem key={match._id} appState={this.props.appState} match={match}></MatchListItem>
       })
     }
     return (
       <div>
-        "Matches for real"
         <div>
           {matchList}
         </div>

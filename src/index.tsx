@@ -24,7 +24,10 @@ class App extends React.Component<{ appState: IAppState }, {}> {
         .then((data : IUser) => {
           this.props.appState.user.data = data
         })
-        .catch(handleExpectedError)
+        .catch((err) => {
+          this.props.appState.user.state = DataState.Error
+          handleExpectedError(err)
+        })
     }
     else {
       this.props.appState.user.state = DataState.NoData

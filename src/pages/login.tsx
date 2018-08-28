@@ -18,7 +18,7 @@ export default class Login extends React.Component<{ appState: IAppState }, {}> 
   render() {
     let body: JSX.Element
 
-    if (this.props.appState.user.state !== DataState.NoData) {
+    if (this.props.appState.user.state !== DataState.NoData && this.props.appState.user.state !== DataState.Error) {
       body = <Redirect to='profile' />
     } else {
       body = <button className="btn btn-primary" onClick={this.handleSignIn}>Sign In</button>
