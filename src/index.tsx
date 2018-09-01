@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 import Login from './pages/login';
 import Matches from './pages/matches';
 import Profile from './pages/profile';
+import Tourmanents from './pages/tournaments';
 import AppState, { IAppState, IUser, DataState } from './states/appState';
 import { authToken } from './config'
 import UserService from './modules/user/user'
@@ -61,7 +62,9 @@ class App extends React.Component<{ appState: IAppState }, {}> {
               <Route path='/matches' render={props => (
                 <Matches appState={this.props.appState} {...props} />
               )} />
-              <Route path='/tournaments' render={() => 'Tournaments'} />
+              <Route path='/tournaments' render={props => (
+                <Tourmanents appState={this.props.appState} {...props} />
+              )} />
               <Route path='/login' render={props => (
                 <Login appState={this.props.appState} {...props} />
               )} />

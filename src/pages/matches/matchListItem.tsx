@@ -22,7 +22,7 @@ export default class MatchListItem extends React.Component<{ appState: IAppState
           <SongCard song={this.props.match.battles[0].song}></SongCard>&nbsp;|&nbsp;
           <SongCard song={this.props.match.battles[1].song}></SongCard>
         </div>
-        <div>VS {opponent.user.displayName}</div>
+        <div>VS&nbsp;{opponent.user.displayName}</div>
         <div>{formatDate(this.props.match.startDate)} - {formatDate(this.props.match.endDate)}</div>
       </div>
     )
