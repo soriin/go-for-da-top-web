@@ -44,6 +44,7 @@ export interface IBattle {
 }
 
 export interface ISong {
+  title: string
 }
 
 export interface IAppState {
