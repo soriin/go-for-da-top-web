@@ -14,7 +14,7 @@ module.exports = {
   entry: getEntrySources([
     './src/index'
   ]),
-  devtool: 'eval',
+  devtool: 'source-map',
   module: {
     rules: [
       {
