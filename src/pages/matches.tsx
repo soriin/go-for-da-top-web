@@ -6,14 +6,17 @@ import { DataState, IAppState } from '../states/appState';
 import MatchListItem from './matches/matchListItem';
 
 @observer
-export default class Matches extends React.Component<{appState: IAppState}> {
+export default class Matches extends React.Component<{ appState: IAppState }> {
   constructor(props) {
     super(props)
   }
 
   async componentDidMount() {
-    const matches = await matchupService.getMine(this.props.appState.myMatches)
-    this.props.appState.myMatches.data = matches.matchups
+    if (this.props.appState.myMatches.state === DataState.NoData ||
+      this.props.appState.myMatches.state === DataState.Error) {
+      const matches = await matchupService.getMine(this.props.appState.myMatches)
+      this.props.appState.myMatches.data = matches.matchups
+    }
   }
 
   render() {

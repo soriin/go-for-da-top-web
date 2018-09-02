@@ -7,8 +7,11 @@ import { observer } from 'mobx-react';
 @observer
 export default class Tourmanents extends React.Component<{appState: IAppState}> {
   async componentDidMount() {
-    const tournaments = await tournamentSvc.getActive(this.props.appState.activeTournaments)
-    this.props.appState.activeTournaments.data = tournaments
+    if (this.props.appState.activeTournaments.state === DataState.NoData ||
+      this.props.appState.activeTournaments.state === DataState.Error) {
+      const tournaments = await tournamentSvc.getActive(this.props.appState.activeTournaments)
+      this.props.appState.activeTournaments.data = tournaments
+    }
   }
 
   render() {

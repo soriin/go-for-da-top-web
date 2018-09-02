@@ -30,10 +30,18 @@
   display: inline-flex;
 }
 
-.gfdt-match-container {
+.list-item-container {
   border-width: 1px;
   border-color: black;
   border-style: solid;
+}
+
+.gfdt-match-list-item-container {
+  @extend .list-item-container
+}
+
+.gfdt-tournament-list-item-container {
+  @extend .list-item-container
 }
 
 .gfdt-flex {

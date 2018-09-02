@@ -14,7 +14,7 @@ export default class MatchListItem extends React.Component<{ appState: IAppState
     })[0]
 
     return (
-      <div className='gfdt-match-container'>
+      <div className='gfdt-match-list-item-container'>
         <div className='gfdt-flex'>
           <SongCard song={this.props.match.battles[0].song}></SongCard>&nbsp;|&nbsp;
           <SongCard song={this.props.match.battles[1].song}></SongCard>
