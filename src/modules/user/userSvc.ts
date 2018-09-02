@@ -1,5 +1,5 @@
-import { IState } from './../../states/appState';
-import { Endpoints } from './../../utils/endpoints';
+import { IState } from '../../states/appState';
+import { Endpoints } from '../../utils/endpoints';
 import api from '../../utils/api'
 
 const getCurrentUser = function getCurrentUserFunc(stateHolder?: IState) {

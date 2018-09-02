@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
-import matchupService from '../modules/matchup/matchup';
+import matchupService from '../modules/matchup/matchupSvc';
 import { DataState, IAppState } from '../states/appState';
 import MatchListItem from './matches/matchListItem';
 
@@ -25,9 +25,7 @@ export default class Matches extends React.Component<{appState: IAppState}> {
     }
     return (
       <div>
-        <div>
-          {matchList}
-        </div>
+        {matchList}
       </div>
     )
   }

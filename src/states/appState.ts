@@ -3,6 +3,7 @@ import { observable } from 'mobx';
 export default class AppState implements IAppState {
   @observable user: { data: IUser, state: DataState }
   @observable myMatches: { data: IMatch[], state: DataState }
+  @observable activeTournaments: { data: ITournament[], state: DataState }
 
     constructor() {
       this.user = {
@@ -16,6 +17,11 @@ export default class AppState implements IAppState {
       }
 
       this.myMatches = {
+        data: [],
+        state: DataState.NoData
+      }
+
+      this.activeTournaments = {
         data: [],
         state: DataState.NoData
       }
@@ -55,6 +61,10 @@ export interface IAppState {
   myMatches: {
     data: IMatch[],
     state: DataState
+  },
+  activeTournaments: {
+    data: ITournament[],
+    state: DataState
   }
 }
 
@@ -74,4 +84,13 @@ export enum DataState {
 
 export interface IState {
   state: DataState
+}
+
+export interface ITournament {
+  _id: string,
+  title: string,
+  isActive: boolean,
+  startDate: Date,
+  endDate: Date,
+  entrants: string[]
 }

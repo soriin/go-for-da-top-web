@@ -7,9 +7,6 @@ import SongCard from '../../components/songCard';
 
 @observer
 export default class MatchListItem extends React.Component<{ appState: IAppState, match: IMatch }> {
-  constructor(props) {
-    super(props)
-  }
   render() {
     const myId = this.props.appState.user.data._id
     const opponent = this.props.match.players.filter((p) => {

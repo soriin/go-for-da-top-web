@@ -12,7 +12,7 @@ import Profile from './pages/profile';
 import Tourmanents from './pages/tournaments';
 import AppState, { IAppState, IUser, DataState } from './states/appState';
 import { authToken } from './config'
-import UserService from './modules/user/user'
+import UserService from './modules/user/userSvc'
 import handleExpectedError from './utils/unexpectedError';
 
 @observer
