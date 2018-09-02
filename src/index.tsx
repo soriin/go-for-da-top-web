@@ -81,10 +81,10 @@ class App extends React.Component<{ appState: IAppState }, {}> {
 
 const appState = new AppState();
 ReactDOM.render(<App appState={appState} />, document.getElementById('root'));
-
+declare var module: any
 // webpack Hot Module Replacement API
-// if (module.hot) {
-//   module.hot.accept('./src/index', () => {
-//     ReactDOM.render(<App appState={appState} />, document.getElementById('root'));
-//   })
-// }
+if (module.hot) {
+  module.hot.accept('./index', () => {
+    ReactDOM.render(<App appState={appState} />, document.getElementById('root'));
+  })
+}
