@@ -6,23 +6,24 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 
+import { authToken } from './config';
+import userService from './modules/user/userSvc';
+import Home from './pages/home';
 import Login from './pages/login';
 import Matches from './pages/matches';
 import Profile from './pages/profile';
 import Tourmanents from './pages/tournaments';
-import AppState, { IAppState, IUser, DataState } from './states/appState';
-import { authToken } from './config'
-import UserService from './modules/user/userSvc'
+import AppState, { DataState, IAppState } from './states/appState';
 import handleExpectedError from './utils/unexpectedError';
 
 @observer
 class App extends React.Component<{ appState: IAppState }, {}> {
   constructor(props) {
     super(props)
-
+    
     if (authToken) {
-      UserService.getCurrentUser(this.props.appState.user)
-        .then((data : IUser) => {
+      userService.getCurrentUser(this.props.appState.user)
+        .then((data) => {
           this.props.appState.user.data = data
         })
         .catch((err) => {
@@ -58,7 +59,9 @@ class App extends React.Component<{ appState: IAppState }, {}> {
             </div>
 
             <div className='gfdt-main'>
-              <Route exact={true} path='/' render={() => 'Welcome home'} />
+              <Route exact={true} path='/' render={props => (
+                <Home appState={this.props.appState} {...props} />
+              )} />
               <Route path='/matches' render={props => (
                 <Matches appState={this.props.appState} {...props} />
               )} />

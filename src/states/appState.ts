@@ -15,7 +15,6 @@ export default class AppState implements IAppState {
         },
         state: DataState.NoData
       }
-
       this.myMatches = {
         data: [],
         state: DataState.NoData
@@ -45,7 +44,7 @@ export interface IPlayer {
 export interface IBattle {
   _id: string,
   song: ISong,
-  chooser: IPlayer,
+  chooser: IUser,
   entries: any
 }
 

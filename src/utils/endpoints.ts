@@ -1,5 +1,6 @@
 export enum Endpoints {
   getCurrentUser = '/users/me',
+  getUserData = '/users/{id}',
   getMyMatchups = '/matchups',
   getActiveTournaments = '/tournaments',
   getTournamentStandings = '/tournaments/{id}/standings'
@@ -7,7 +8,7 @@ export enum Endpoints {
 
 export function setParams(endpoint: Endpoints, params: any) {
   let hydratedEndpoint: string = endpoint
-  params.keys.forEach(key => {
+  Object.keys(params).forEach(key => {
     hydratedEndpoint = hydratedEndpoint.replace(`{${key}}`, params[key])
   })
   return hydratedEndpoint
