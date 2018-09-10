@@ -2,7 +2,8 @@ import { observer } from 'mobx-react';
 import * as React from 'react';
 import { Redirect } from 'react-router';
 
-import { IAppState, DataState } from '../states/appState';
+import { DataState, IAppState } from '../states/appState';
+import EditProfile from './profile/editProfile';
 
 @observer
 export default class Profile extends React.Component<{appState: IAppState}> {
@@ -15,7 +16,7 @@ export default class Profile extends React.Component<{appState: IAppState}> {
     if (this.props.appState.user.state === DataState.Loading) {
       body = <span>Loading...</span>
     } else if (this.props.appState.user.state === DataState.Loaded) {
-      body = <span>{this.props.appState.user.data.realName}</span>
+      body = <EditProfile user={this.props.appState.user.data}></EditProfile>
     } else {
       body = <Redirect to='login' />
     }

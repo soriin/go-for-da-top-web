@@ -11,7 +11,8 @@ export default class AppState implements IAppState {
           _id: '',
           realName: '',
           displayName: '',
-          isAdmin: false
+          isAdmin: false,
+          email: ''
         },
         state: DataState.NoData
       }
@@ -71,7 +72,8 @@ export interface IUser {
   _id: string,
   realName: string,
   displayName: string,
-  isAdmin: boolean
+  isAdmin: boolean,
+  email: string
 }
 
 export enum DataState {
