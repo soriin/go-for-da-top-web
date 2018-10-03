@@ -1,9 +1,9 @@
 export enum Endpoints {
-  getCurrentUser = '/users/me',
-  getUserData = '/users/{id}',
-  getMyMatchups = '/matchups',
-  getActiveTournaments = '/tournaments',
-  getTournamentStandings = '/tournaments/{id}/standings'
+  currentUser = '/users/me',
+  userData = '/users/{_id}',
+  matchups = '/matchups',
+  tournaments = '/tournaments',
+  tournamentStandings = '/tournaments/{_id}/standings'
 }
 
 export function setParams(endpoint: Endpoints, params: any) {

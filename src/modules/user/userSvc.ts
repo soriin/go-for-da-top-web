@@ -8,18 +8,23 @@ class UserService implements IUserService {
   constructor() {
     this.cache = new UserCache()
   }
+
+  updateUser(userData: IUser, stateHolder?: IState) : Promise<IUser> {
+    return api.put(setParams(Endpoints.userData, userData), { data: userData, stateHolder: stateHolder })
+  }
+
   getCurrentUser(stateHolder?: IState) : Promise<IUser> {
-    return api.get(Endpoints.getCurrentUser, {stateHolder})
+    return api.get(Endpoints.currentUser, {stateHolder})
   }
   
-  getUserData(id: string) : Promise<IUser> {
-    const cachedUser = this.cache.getUser(id)
+  getUserData(_id: string) : Promise<IUser> {
+    const cachedUser = this.cache.getUser(_id)
     if (cachedUser) {
       return new Promise(function (resolve) {
         resolve(cachedUser)
       })
     }
-    return api.get(setParams(Endpoints.getUserData, {id})).then((user: IUser) => {
+    return api.get(setParams(Endpoints.userData, {_id})).then((user: IUser) => {
       this.cache.saveUser(user)
       return user
     })

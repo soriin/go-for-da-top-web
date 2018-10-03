@@ -72,7 +72,7 @@ export interface IUser {
   _id: string,
   realName: string,
   displayName: string,
-  isAdmin: boolean,
+  isAdmin?: boolean,
   email: string
 }
 

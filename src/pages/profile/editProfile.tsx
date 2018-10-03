@@ -3,44 +3,55 @@ import mobxReactForm from 'mobx-react-form';
 import * as React from 'react';
 import validatorjs from 'validatorjs';
 
-import { IUser } from '../../states/appState';
+import { IUser, IAppState } from '../../states/appState';
 import EditProfileForm from './editProfileForm';
+import userService from '../../modules/user/userSvc';
 
 const MobxReactForm = mobxReactForm as any
 const plugins = { dvr: validatorjs }
-const onSuccess = function onSuccessFunc(form) {
-  console.log('form submit!')
-}
-const onError = function onErrorFunc(form) {
-  console.log('All form errors', form.errors());
-}
-const hooks = {
-  onSuccess,
-  onError
-}
 
 @observer
-export default class EditProfile extends React.Component<{ user: IUser }> {
-  render() {
+export default class EditProfile extends React.Component<{ appState: IAppState }> {
+  async onSuccess(form) {
+    const formValues: IUser = {
+      _id: this.props.appState.user.data._id,
+      realName: form.$('realName').$value,
+      displayName: form.$('displayName').$value,
+      email: form.$('email').$value
+    }
+    const updatedUser = await userService.updateUser(formValues)
+    if (updatedUser) {
+      this.props.appState.user.data = updatedUser
+    }
+  }
 
+  onError(form) {
+    console.log('All form errors', form.errors());
+  }
+
+  render() {
+    const hooks = {
+      onSuccess: this.onSuccess.bind(this),
+      onError: this.onError
+    }
     const fields = [
       {
         name: 'displayName',
         label: 'eAmuse Name',
         rules: 'required|string|between:4,20',
-        value: this.props.user.displayName
+        value: this.props.appState.user.data.displayName
       },
       {
         name: 'email',
         label: 'Email',
         rules: 'email|string',
-        value: this.props.user.email
+        value: this.props.appState.user.data.email
       },
       {
         name: 'realName',
         label: 'Real Name',
         rules: 'string|between:5,40',
-        value: this.props.user.realName
+        value: this.props.appState.user.data.realName
       }
     ]
     const form = new MobxReactForm({ fields }, { plugins, hooks })

@@ -16,7 +16,7 @@ export default class Profile extends React.Component<{appState: IAppState}> {
     if (this.props.appState.user.state === DataState.Loading) {
       body = <span>Loading...</span>
     } else if (this.props.appState.user.state === DataState.Loaded) {
-      body = <EditProfile user={this.props.appState.user.data}></EditProfile>
+      body = <EditProfile appState={this.props.appState}></EditProfile>
     } else {
       body = <Redirect to='login' />
     }
