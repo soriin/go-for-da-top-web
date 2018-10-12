@@ -1,32 +1,26 @@
 import { IState, IUser } from '../../states/appState';
 import api from '../../utils/api';
 import { Endpoints, setParams } from '../../utils/endpoints';
-import UserCache from './userCache';
+import * as cache from '../cache/cacheSvc';
 
 class UserService implements IUserService {
-  cache: UserCache
-  constructor() {
-    this.cache = new UserCache()
+  async updateUser(userData: IUser, stateHolder?: IState) : Promise<IUser> {
+    return await api.put(setParams(Endpoints.userData, userData), { data: userData, stateHolder: stateHolder })
   }
 
-  updateUser(userData: IUser, stateHolder?: IState) : Promise<IUser> {
-    return api.put(setParams(Endpoints.userData, userData), { data: userData, stateHolder: stateHolder })
-  }
-
-  getCurrentUser(stateHolder?: IState) : Promise<IUser> {
-    return api.get(Endpoints.currentUser, {stateHolder})
+  async getCurrentUser(stateHolder?: IState) : Promise<IUser> {
+    return await api.get(Endpoints.currentUser, {stateHolder})
   }
   
-  getUserData(_id: string) : Promise<IUser> {
-    const cachedUser = this.cache.getUser(_id)
+  async getUserData(_id: string) : Promise<IUser> {
+    const cachedUser = cache.getItem(_id)
     if (cachedUser) {
-      return new Promise(function (resolve) {
-        resolve(cachedUser)
-      })
+      return cachedUser
     }
-    return api.get(setParams(Endpoints.userData, {_id})).then((user: IUser) => {
-      this.cache.saveUser(user)
-      return user
+    return await api.get(setParams(Endpoints.userData, {_id}))
+      .then((user: IUser) => {
+        cache.setItem(_id, user)
+        return user
     })
   }
 }

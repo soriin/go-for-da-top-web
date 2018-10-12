@@ -4,6 +4,7 @@ export default class AppState implements IAppState {
   @observable user: { data: IUser, state: DataState }
   @observable myMatches: { data: IMatch[], state: DataState }
   @observable activeTournaments: { data: ITournament[], state: DataState }
+  @observable songs: {data: ISong[], state: DataState }
 
     constructor() {
       this.user = {
@@ -22,6 +23,10 @@ export default class AppState implements IAppState {
       }
 
       this.activeTournaments = {
+        data: [],
+        state: DataState.NoData
+      }
+      this.songs = {
         data: [],
         state: DataState.NoData
       }
@@ -64,6 +69,10 @@ export interface IAppState {
   },
   activeTournaments: {
     data: ITournament[],
+    state: DataState
+  },
+  songs: {
+    data: ISong[],
     state: DataState
   }
 }
