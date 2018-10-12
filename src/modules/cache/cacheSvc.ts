@@ -6,7 +6,7 @@ export function getItem(key: string) : any {
   }
 }
 
-export function setItem(key: string, item: any) {
+export function setItem(key: string, item?: any) {
   if (!key) return
   sessionStorage.setItem(key, JSON.stringify(item))
 }

@@ -3,11 +3,13 @@ import { IBattle, IAppState, IMatch, DataState } from "../states/appState";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import userService, { IUserService } from '../modules/user/userSvc'
 import songService, { ISongService } from '../modules/song/songSvc'
+import matchupService, { IMatchupService } from '../modules/matchup/matchupSvc'
 import Select from 'react-select'
 
 export default class SongChooser extends React.Component<{ appState: IAppState, match: IMatch, battle: IBattle }, any> {
   userService: IUserService
   songService: ISongService
+  matchupService: IMatchupService
   constructor(props) {
     super(props)
     this.state = {
@@ -15,13 +17,16 @@ export default class SongChooser extends React.Component<{ appState: IAppState, 
       opponentName: '',
       playerOneName: '',
       playerTwoName: '',
-      selectedSong: {}
+      selectedSong: {},
+      dialogState: DataState.Loaded
     };
     this.userService = userService
     this.songService = songService
+    this.matchupService = matchupService
 
     this.toggleDialog = this.toggleDialog.bind(this)
     this.selectSong = this.selectSong.bind(this)
+    this.saveSongChoice = this.saveSongChoice.bind(this)
   }
 
   componentWillMount() {
@@ -39,13 +44,23 @@ export default class SongChooser extends React.Component<{ appState: IAppState, 
 
   toggleDialog() {
     this.setState({
-      modalVisibility: !this.state.modalVisibility
+      modalVisibility: !this.state.modalVisibility,
+      dialogState: DataState.NoData
     })
   }
 
   selectSong(selectedSong) {
-    this.setState({ selectedSong })
+    this.setState({ selectedSong: selectedSong.value })
   }
+
+  async saveSongChoice() {
+    this.setState({ dialogState: DataState.Loading })
+    await this.matchupService.setSongSelection(this.props.match._id, this.state.selectedSong._id)
+    const matches = await this.matchupService.getMine(this.props.appState.myMatches)
+    this.props.appState.myMatches.data = matches.matchups
+    this.setState({ modalVisibility: false })
+  }
+
   render() {
     let selectElem : JSX.Element
     if (this.props.appState.songs.state === DataState.Loaded) {
@@ -61,6 +76,20 @@ export default class SongChooser extends React.Component<{ appState: IAppState, 
     } else {
       selectElem = <span>Error loading songs</span>
     }
+
+    let footer: JSX.Element
+    if (this.state.dialogState !== DataState.Loading) {
+      footer = 
+        <ModalFooter>
+          <Button color="primary" onClick={this.saveSongChoice}>Save</Button>{' '}
+          <Button color="secondary" onClick={this.toggleDialog}>Cancel</Button>
+        </ModalFooter>
+    } else {
+      footer = 
+        <ModalFooter>
+          <span>Loading...</span>
+        </ModalFooter>
+    }
     return (
       <div>
         <span className='gfdt-clickable' onClick={this.toggleDialog}>Pick a song, fool!</span>
@@ -71,10 +100,7 @@ export default class SongChooser extends React.Component<{ appState: IAppState, 
             Choose song pick for {this.state.playerOneName} VS {this.state.playerTwoName}
             {selectElem}
           </ModalBody>
-          <ModalFooter>
-            <Button color="primary" onClick={this.toggleDialog}>Save</Button>{' '}
-            <Button color="secondary" onClick={this.toggleDialog}>Cancel</Button>
-          </ModalFooter>
+          {footer}
         </Modal>
       </div>
     )

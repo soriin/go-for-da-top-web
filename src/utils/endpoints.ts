@@ -2,10 +2,11 @@ export enum Endpoints {
   currentUser = '/users/me',
   userData = '/users/{_id}',
   matchups = '/matchups',
+  matchupSongSelection = '/matchups/{_id}/songselection',
   tournaments = '/tournaments',
   tournamentStandings = '/tournaments/{_id}/standings',
   songs = '/songs',
-  song = '/songs/{_id}'
+  song = '/songs/{_id}',
 }
 
 export function setParams(endpoint: Endpoints, params: any) {
