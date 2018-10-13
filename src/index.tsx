@@ -7,12 +7,14 @@ import * as ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 
 import { authToken } from './config';
+import * as icons from './modules/icons/icons';
 import userService from './modules/user/userSvc';
 import HomePage from './pages/homePage';
 import LoginPage from './pages/loginPage';
 import MatchesPage from './pages/matchesPage';
 import ProfilePage from './pages/profilePage';
 import TourmanentsPage from './pages/tournamentsPage';
+import TourmanentStandingsPage from './pages/tournamentStandingsPage';
 import AppState, { DataState, IAppState } from './states/appState';
 import handleExpectedError from './utils/unexpectedError';
 
@@ -28,6 +30,7 @@ class App extends React.Component<{ appState: IAppState }> {
         .then((data) => {
           this.props.appState.user.data = data
         })
+        .then(this.onSuccessfulLoad)
         .catch((err) => {
           this.props.appState.user.state = DataState.Error
           handleExpectedError(err)
@@ -36,6 +39,10 @@ class App extends React.Component<{ appState: IAppState }> {
     else {
       this.props.appState.user.state = DataState.NoData
     }
+  }
+
+  onSuccessfulLoad() {
+    icons.initializeIcons()
   }
 
   render() {
@@ -76,6 +83,9 @@ class App extends React.Component<{ appState: IAppState }> {
               )} />
               <Route path='/profile' render={props => (
                 <ProfilePage appState={this.props.appState} {...props} />
+              )} />
+              <Route path='/tournament/:id' render={props => (
+                <TourmanentStandingsPage appState={this.props.appState} {...props} />
               )} />
             </div>
           </div>

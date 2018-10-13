@@ -3,11 +3,11 @@ import * as React from 'react';
 import { Redirect } from 'react-router';
 
 import { DataState } from '../states/appState';
-import { IDefaultProps } from '../utils/IDefaultProps';
+import { IPageDefaultProps } from '../utils/IDefaultProps';
 import EditProfile from './profile/editProfile';
 
 @observer
-export default class ProfilePage extends React.Component<IDefaultProps> {
+export default class ProfilePage extends React.Component<IPageDefaultProps> {
   constructor (props) {
     super(props)
   }

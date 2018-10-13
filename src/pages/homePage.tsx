@@ -2,9 +2,9 @@ import * as React from 'react';
 
 import MatchesList from '../components/matches/matchesList';
 import TourmanentsList from '../components/tournaments/tournamentList';
-import { IDefaultProps } from '../utils/IDefaultProps';
+import { IPageDefaultProps } from '../utils/IDefaultProps';
 
-export default class HomePage extends React.Component<IDefaultProps> {
+export default class HomePage extends React.Component<IPageDefaultProps> {
   render() {
     const today = new Date()
     return (

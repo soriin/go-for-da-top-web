@@ -4,10 +4,10 @@ import { Redirect } from 'react-router';
 
 import { apiBase } from '../config';
 import { DataState } from '../states/appState';
-import { IDefaultProps } from '../utils/IDefaultProps';
+import { IPageDefaultProps } from '../utils/IDefaultProps';
 
 @observer
-export default class LoginPage extends React.Component<IDefaultProps> {
+export default class LoginPage extends React.Component<IPageDefaultProps> {
   constructor(props) {
     super(props)
     this.signIn = this.signIn.bind(this)

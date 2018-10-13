@@ -51,3 +51,15 @@
 .gfdt-flex {
   display: flex;
 }
+
+.gfdt-icon {
+  margin: 5px;
+}
+
+
+// ------------- Default HTML Element Overrides ------------------
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
