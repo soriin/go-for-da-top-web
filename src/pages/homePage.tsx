@@ -8,7 +8,7 @@ export default class HomePage extends React.Component<IPageDefaultProps> {
   render() {
     const today = new Date()
     return (
-      <div>
+      <div className='gfdt-flex'>
         <div>
           <span>Active Tournaments</span>
           <TourmanentsList appState={this.props.appState} />
