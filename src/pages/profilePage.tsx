@@ -6,7 +6,7 @@ import { DataState, IAppState } from '../states/appState';
 import EditProfile from './profile/editProfile';
 
 @observer
-export default class Profile extends React.Component<{appState: IAppState}> {
+export default class ProfilePage extends React.Component<{appState: IAppState}> {
   constructor (props) {
     super(props)
   }

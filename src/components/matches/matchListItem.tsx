@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
-import SongCard from '../../components/songCard';
-import SongChooser from '../../components/songChooser';
+import SongCard from '../songCard';
+import SongChooser from '../songChooser';
 import { IAppState, IMatch } from '../../states/appState';
 import { formatDate } from '../../utils/formatter';
 import Utils from '../../utils/utils';

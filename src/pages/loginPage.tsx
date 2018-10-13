@@ -6,7 +6,7 @@ import { apiBase } from '../config'
 import { IAppState, DataState } from '../states/appState';
 
 @observer
-export default class Login extends React.Component<{ appState: IAppState }, {}> {
+export default class LoginPage extends React.Component<{ appState: IAppState }, {}> {
   constructor(props) {
     super(props)
     this.signIn = this.signIn.bind(this)

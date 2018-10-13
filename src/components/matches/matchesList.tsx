@@ -2,12 +2,12 @@ import { observer } from 'mobx-react';
 import * as moment from 'moment';
 import * as React from 'react';
 
-import matchupService, { IMatchupService } from '../modules/matchup/matchupSvc';
-import { DataState, IAppState, IMatch } from '../states/appState';
-import MatchListItem from './matches/matchListItem';
+import matchupService, { IMatchupService } from '../../modules/matchup/matchupSvc';
+import { DataState, IAppState, IMatch } from '../../states/appState';
+import MatchListItem from './matchListItem';
 
 @observer
-export default class Matches extends React.Component<IMatchesProps, IMatchesState> {
+export default class MatchesList extends React.Component<IMatchesProps, IMatchesState> {
   matchupService: IMatchupService
 
   constructor(props) {

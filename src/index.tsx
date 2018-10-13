@@ -8,11 +8,11 @@ import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 
 import { authToken } from './config';
 import userService from './modules/user/userSvc';
-import Home from './pages/home';
-import Login from './pages/login';
-import Matches from './pages/matches';
-import Profile from './pages/profile';
-import Tourmanents from './pages/tournaments';
+import HomePage from './pages/homePage';
+import LoginPage from './pages/loginPage';
+import MatchesPage from './pages/matchesPage';
+import ProfilePage from './pages/profilePage';
+import TourmanentsPage from './pages/tournamentsPage';
 import AppState, { DataState, IAppState } from './states/appState';
 import handleExpectedError from './utils/unexpectedError';
 
@@ -60,19 +60,19 @@ class App extends React.Component<{ appState: IAppState }, {}> {
 
             <div className='gfdt-main'>
               <Route exact={true} path='/' render={props => (
-                <Home appState={this.props.appState} {...props} />
+                <HomePage appState={this.props.appState} {...props} />
               )} />
               <Route path='/matches' render={props => (
-                <Matches appState={this.props.appState} {...props} />
+                <MatchesPage appState={this.props.appState} {...props} />
               )} />
               <Route path='/tournaments' render={props => (
-                <Tourmanents appState={this.props.appState} {...props} />
+                <TourmanentsPage appState={this.props.appState} {...props} />
               )} />
               <Route path='/login' render={props => (
-                <Login appState={this.props.appState} {...props} />
+                <LoginPage appState={this.props.appState} {...props} />
               )} />
               <Route path='/profile' render={props => (
-                <Profile appState={this.props.appState} {...props} />
+                <ProfilePage appState={this.props.appState} {...props} />
               )} />
             </div>
           </div>
