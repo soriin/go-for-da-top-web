@@ -1,9 +1,10 @@
-import * as React from 'react'
-import { IAppState } from "../states/appState";
-import TourmanentsList from '../components/tournaments/tournamentList';
-import MatchesList from '../components/matches/matchesList';
+import * as React from 'react';
 
-export default class HomePage extends React.Component<{ appState: IAppState }> {
+import MatchesList from '../components/matches/matchesList';
+import TourmanentsList from '../components/tournaments/tournamentList';
+import { IDefaultProps } from '../utils/IDefaultProps';
+
+export default class HomePage extends React.Component<IDefaultProps> {
   render() {
     const today = new Date()
     return (

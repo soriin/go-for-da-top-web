@@ -1,12 +1,13 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { Redirect } from 'react-router';
-import { apiBase } from '../config'
 
-import { IAppState, DataState } from '../states/appState';
+import { apiBase } from '../config';
+import { DataState } from '../states/appState';
+import { IDefaultProps } from '../utils/IDefaultProps';
 
 @observer
-export default class LoginPage extends React.Component<{ appState: IAppState }, {}> {
+export default class LoginPage extends React.Component<IDefaultProps> {
   constructor(props) {
     super(props)
     this.signIn = this.signIn.bind(this)

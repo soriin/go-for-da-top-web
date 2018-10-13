@@ -1,7 +1,9 @@
-import * as React from 'react'
-import { ITournament, IAppState } from '../../states/appState';
+import * as React from 'react';
 
-export default class TournamentListItem extends React.Component<{ appState: IAppState, tournament: ITournament}> {
+import { ITournament } from '../../states/appState';
+import { IDefaultProps } from '../../utils/IDefaultProps';
+
+export default class TournamentListItem extends React.Component<ITournamentListItemProps> {
   render() {
     return (
       <div className='gfdt-tournament-list-item-container'>
@@ -9,4 +11,8 @@ export default class TournamentListItem extends React.Component<{ appState: IApp
       </div>
     )
   }
+}
+
+interface ITournamentListItemProps extends IDefaultProps {
+  tournament: ITournament
 }

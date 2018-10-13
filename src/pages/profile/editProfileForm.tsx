@@ -2,7 +2,7 @@ import { observer } from 'mobx-react';
 import * as React from 'react';
 
 @observer
-export default class EditProfileForm extends React.Component<{ form: any }>{
+export default class EditProfileForm extends React.Component<IEditProfileFormProps>{
   render() {
     return (
       <form onSubmit={this.props.form.onSubmit}>
@@ -36,4 +36,8 @@ export default class EditProfileForm extends React.Component<{ form: any }>{
       </form>
     )
   }
+}
+
+interface IEditProfileFormProps {
+  form: any
 }

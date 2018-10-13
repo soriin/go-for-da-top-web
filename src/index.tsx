@@ -17,10 +17,12 @@ import AppState, { DataState, IAppState } from './states/appState';
 import handleExpectedError from './utils/unexpectedError';
 
 @observer
-class App extends React.Component<{ appState: IAppState }, {}> {
+class App extends React.Component<{ appState: IAppState }> {
   constructor(props) {
     super(props)
-    
+  }
+
+  componentWillMount() {
     if (authToken) {
       userService.getCurrentUser(this.props.appState.user)
         .then((data) => {
@@ -35,6 +37,7 @@ class App extends React.Component<{ appState: IAppState }, {}> {
       this.props.appState.user.state = DataState.NoData
     }
   }
+
   render() {
     let loginLink : JSX.Element
     if (this.props.appState.user.state === DataState.NoData) {

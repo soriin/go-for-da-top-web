@@ -2,11 +2,12 @@ import { observer } from 'mobx-react';
 import * as React from 'react';
 import { Redirect } from 'react-router';
 
-import { DataState, IAppState } from '../states/appState';
+import { DataState } from '../states/appState';
+import { IDefaultProps } from '../utils/IDefaultProps';
 import EditProfile from './profile/editProfile';
 
 @observer
-export default class ProfilePage extends React.Component<{appState: IAppState}> {
+export default class ProfilePage extends React.Component<IDefaultProps> {
   constructor (props) {
     super(props)
   }

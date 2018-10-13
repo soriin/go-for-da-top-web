@@ -1,11 +1,11 @@
 import { observer } from 'mobx-react';
-import *as React from 'react';
+import * as React from 'react';
 
 import MatchesList from '../components/matches/matchesList';
-import AppState from '../states/appState';
+import { IDefaultProps } from '../utils/IDefaultProps';
 
 @observer
-export default class MatchesPage extends React.Component<{appState: AppState}> {
+export default class MatchesPage extends React.Component<IDefaultProps> {
   constructor(props) {
     super(props)
   }

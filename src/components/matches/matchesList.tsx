@@ -7,7 +7,7 @@ import { DataState, IAppState, IMatch } from '../../states/appState';
 import MatchListItem from './matchListItem';
 
 @observer
-export default class MatchesList extends React.Component<IMatchesProps, IMatchesState> {
+export default class MatchesList extends React.Component<IMatchesListProps, IMatchesListState> {
   matchupService: IMatchupService
 
   constructor(props) {
@@ -65,13 +65,13 @@ export default class MatchesList extends React.Component<IMatchesProps, IMatches
   }
 }
 
-interface IMatchesProps {
+interface IMatchesListProps {
   appState: IAppState,
   startBefore?: Date,
   startAfter?: Date,
   endBefore?: Date,
   endAfter?: Date,
 }
-interface IMatchesState {
+interface IMatchesListState {
   matchList: IMatch[]
 }

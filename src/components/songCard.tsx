@@ -4,7 +4,7 @@ import * as React from 'react';
 import { ISong } from '../states/appState';
 
 @observer
-export default class SongCard extends React.Component<{ song: ISong }> {
+export default class SongCard extends React.Component<ISongCardProps> {
   constructor(props) {
     super(props)
   }
@@ -16,4 +16,8 @@ export default class SongCard extends React.Component<{ song: ISong }> {
       <div>{song}</div>
     )
   }
+}
+
+interface ISongCardProps {
+  song: ISong
 }

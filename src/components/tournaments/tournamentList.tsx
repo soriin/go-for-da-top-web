@@ -1,11 +1,13 @@
-import * as React from 'react'
-import { IAppState, DataState } from '../../states/appState';
-import tournamentSvc from '../../modules/tournaments/tournamentSvc';
-import TournamentListItem from '../../components/tournaments/tournamentListItem';
 import { observer } from 'mobx-react';
+import * as React from 'react';
+
+import TournamentListItem from '../../components/tournaments/tournamentListItem';
+import tournamentSvc from '../../modules/tournaments/tournamentSvc';
+import { DataState, IAppState } from '../../states/appState';
+import { IDefaultProps } from '../../utils/IDefaultProps';
 
 @observer
-export default class TournamentList extends React.Component<{appState: IAppState}> {
+export default class TournamentList extends React.Component<IDefaultProps> {
   async componentDidMount() {
     if (this.props.appState.activeTournaments.state === DataState.NoData ||
       this.props.appState.activeTournaments.state === DataState.Error) {

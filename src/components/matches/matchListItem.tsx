@@ -1,14 +1,15 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
+import { IMatch } from '../../states/appState';
+import { formatDate } from '../../utils/formatter';
+import { IDefaultProps } from '../../utils/IDefaultProps';
+import Utils from '../../utils/utils';
 import SongCard from '../songCard';
 import SongChooser from '../songChooser';
-import { IAppState, IMatch } from '../../states/appState';
-import { formatDate } from '../../utils/formatter';
-import Utils from '../../utils/utils';
 
 @observer
-export default class MatchListItem extends React.Component<{ appState: IAppState, match: IMatch }> {
+export default class MatchListItem extends React.Component<IMatchListItemProps> {
   render() {
     const myId = this.props.appState.user.data._id
     const opponent = Utils.getOpponent(this.props.match, this.props.appState.user.data)
@@ -37,4 +38,8 @@ export default class MatchListItem extends React.Component<{ appState: IAppState
       </div>
     )
   }
+}
+
+interface IMatchListItemProps extends IDefaultProps {
+  match: IMatch
 }

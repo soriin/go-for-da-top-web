@@ -3,15 +3,16 @@ import mobxReactForm from 'mobx-react-form';
 import * as React from 'react';
 import validatorjs from 'validatorjs';
 
-import { IUser, IAppState } from '../../states/appState';
-import EditProfileForm from './editProfileForm';
 import userService from '../../modules/user/userSvc';
+import { IUser } from '../../states/appState';
+import { IDefaultProps } from '../../utils/IDefaultProps';
+import EditProfileForm from './editProfileForm';
 
 const MobxReactForm = mobxReactForm as any
 const plugins = { dvr: validatorjs }
 
 @observer
-export default class EditProfile extends React.Component<{ appState: IAppState }> {
+export default class EditProfile extends React.Component<IDefaultProps> {
   async onSuccess(form) {
     const formValues: IUser = {
       _id: this.props.appState.user.data._id,

@@ -1,12 +1,14 @@
-import * as React from 'react'
-import { IBattle, IAppState, IMatch, DataState } from "../states/appState";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import userService, { IUserService } from '../modules/user/userSvc'
-import songService, { ISongService } from '../modules/song/songSvc'
-import matchupService, { IMatchupService } from '../modules/matchup/matchupSvc'
-import Select from 'react-select'
+import * as React from 'react';
+import Select from 'react-select';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
-export default class SongChooser extends React.Component<{ appState: IAppState, match: IMatch, battle: IBattle }, any> {
+import matchupService, { IMatchupService } from '../modules/matchup/matchupSvc';
+import songService, { ISongService } from '../modules/song/songSvc';
+import userService, { IUserService } from '../modules/user/userSvc';
+import { DataState, IBattle, IMatch, ISong } from '../states/appState';
+import { IDefaultProps } from '../utils/IDefaultProps';
+
+export default class SongChooser extends React.Component<ISongChooserProps, ISongChooserState> {
   userService: IUserService
   songService: ISongService
   matchupService: IMatchupService
@@ -17,8 +19,9 @@ export default class SongChooser extends React.Component<{ appState: IAppState, 
       opponentName: '',
       playerOneName: '',
       playerTwoName: '',
-      selectedSong: {},
-      dialogState: DataState.Loaded
+      selectedSong: undefined,
+      dialogState: DataState.Loaded,
+      songOptions: undefined
     };
     this.userService = userService
     this.songService = songService
@@ -31,14 +34,14 @@ export default class SongChooser extends React.Component<{ appState: IAppState, 
 
   componentWillMount() {
     this.userService.getUserData(this.props.match.players[0].user._id)
-      .then((user) => this.setState({ playerOneName: user.displayName}))
+      .then((user) => this.setState({ playerOneName: user.displayName }))
     this.userService.getUserData(this.props.match.players[1].user._id)
-      .then((user) => this.setState({ playerTwoName: user.displayName}))
+      .then((user) => this.setState({ playerTwoName: user.displayName }))
     this.songService.getAllSongs(this.props.appState.songs)
       .then(songs => {
         if (!songs) return
-        const options = songs.map(s => { return { value: s, label: s.title } } )
-        this.setState({songOptions: options})
+        const options = songs.map(s => { return { value: s, label: s.title } })
+        this.setState({ songOptions: options })
       })
   }
 
@@ -62,7 +65,7 @@ export default class SongChooser extends React.Component<{ appState: IAppState, 
   }
 
   render() {
-    let selectElem : JSX.Element
+    let selectElem: JSX.Element
     if (this.props.appState.songs.state === DataState.Loaded) {
       selectElem = <div>
         <Select
@@ -79,13 +82,13 @@ export default class SongChooser extends React.Component<{ appState: IAppState, 
 
     let footer: JSX.Element
     if (this.state.dialogState !== DataState.Loading) {
-      footer = 
+      footer =
         <ModalFooter>
           <Button color="primary" onClick={this.saveSongChoice}>Save</Button>{' '}
           <Button color="secondary" onClick={this.toggleDialog}>Cancel</Button>
         </ModalFooter>
     } else {
-      footer = 
+      footer =
         <ModalFooter>
           <span>Loading...</span>
         </ModalFooter>
@@ -105,4 +108,19 @@ export default class SongChooser extends React.Component<{ appState: IAppState, 
       </div>
     )
   }
+}
+
+interface ISongChooserProps extends IDefaultProps {
+  match: IMatch,
+  battle: IBattle
+}
+
+interface ISongChooserState {
+  modalVisibility: Boolean,
+  opponentName: String,
+  playerOneName: String,
+  playerTwoName: String,
+  selectedSong: ISong,
+  dialogState: DataState,
+  songOptions: any
 }
