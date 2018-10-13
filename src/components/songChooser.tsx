@@ -33,10 +33,23 @@ export default class SongChooser extends React.Component<ISongChooserProps, ISon
   }
 
   componentWillMount() {
-    this.userService.getUserData(this.props.match.players[0].user._id)
-      .then((user) => this.setState({ playerOneName: user.displayName }))
-    this.userService.getUserData(this.props.match.players[1].user._id)
-      .then((user) => this.setState({ playerTwoName: user.displayName }))
+    const myId = this.props.appState.user.data._id
+    const playerOneId = this.props.match.players[0].user._id
+    const playerTwoId = this.props.match.players[1].user._id
+    if (myId !== playerOneId) {
+      this.userService.getUserData(playerOneId)
+        .then((user) => this.setState({ playerOneName: user.displayName }))
+    } else {
+      this.setState({ playerOneName: 'you'})
+    }
+
+    if (myId !== playerTwoId) {
+      this.userService.getUserData(playerTwoId)
+        .then((user) => this.setState({ playerTwoName: user.displayName }))
+    } else {
+      this.setState({ playerTwoName: 'you'})
+    }
+    
     this.songService.getAllSongs(this.props.appState.songs)
       .then(songs => {
         if (!songs) return
