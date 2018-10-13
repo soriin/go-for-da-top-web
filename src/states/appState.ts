@@ -35,8 +35,8 @@ export default class AppState implements IAppState {
 
 export interface IMatch {
   _id: string,
-  endDate: Date,
-  startDate: Date,
+  endDate: Date|string,
+  startDate: Date|string,
   tournament: string,
   battles: IBattle[],
   players: IPlayer[]
