@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import TournamentListItem from '../../components/tournaments/tournamentListItem';
 import tournamentSvc from '../../modules/tournaments/tournamentSvc';
-import { DataState, IAppState } from '../../states/appState';
+import { DataState } from '../../states/appState';
 import { IDefaultProps } from '../../utils/IDefaultProps';
 
 @observer
