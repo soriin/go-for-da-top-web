@@ -7,6 +7,7 @@ import { IDefaultProps } from '../../utils/IDefaultProps';
 import Utils from '../../utils/utils';
 import SongCard from '../songCard';
 import SongChooser from '../songChooser';
+import BattleSubmission from './battleSubmission';
 
 @observer
 export default class MatchListItem extends React.Component<IMatchListItemProps> {
@@ -35,6 +36,8 @@ export default class MatchListItem extends React.Component<IMatchListItemProps> 
         </div>
         <div>VS&nbsp;{opponent.user.displayName}</div>
         <div>{formatDate(this.props.match.startDate)} - {formatDate(this.props.match.endDate)}</div>
+        <BattleSubmission appState={this.props.appState} match={this.props.match} battle={this.props.match.battles[0]} />
+        <BattleSubmission appState={this.props.appState} match={this.props.match} battle={this.props.match.battles[1]} />
       </div>
     )
   }
