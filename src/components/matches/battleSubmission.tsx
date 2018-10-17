@@ -1,7 +1,15 @@
-import * as React from 'react'
-import { IDefaultProps } from '../../utils/IDefaultProps'
-import { observer } from 'mobx-react'
-import { IMatch, IBattle } from '../../states/appState';
+import { observer } from 'mobx-react';
+import mobxReactForm from 'mobx-react-form';
+import * as React from 'react';
+import validatorjs from 'validatorjs';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+
+import { IBattle, IMatch, DataState } from '../../states/appState';
+import { IDefaultProps } from '../../utils/IDefaultProps';
+import BattleSubmissionForm from './battleSubmissionForm';
+
+const MobxReactForm = mobxReactForm as any
+const plugins = { dvr: validatorjs }
 
 @observer
 export default class BattleSubmission extends React.Component<IBattleSubmissionProps, IBattleSubmissionState> {
@@ -9,7 +17,8 @@ export default class BattleSubmission extends React.Component<IBattleSubmissionP
     super(props)
 
     this.state = {
-      canSubmit: false
+      canSubmit: false,
+      modalVisibility: false
     }
   }
 
@@ -19,9 +28,18 @@ export default class BattleSubmission extends React.Component<IBattleSubmissionP
 
   }
   render() {
+    let submitable = this.state.canSubmit
+    let body : JSX.Element
+    if (submitable) {
+      body = <div>
+        Gimme dem stats
+      </div>
+    } else {
+      body = <div></div>
+    }
     return (
       <div>
-        BATTLE!
+        {body}
       </div>
     )
   }
@@ -33,5 +51,6 @@ interface IBattleSubmissionProps extends IDefaultProps {
 }
 
 interface IBattleSubmissionState {
-  canSubmit: Boolean
+  canSubmit: Boolean,
+  modalVisibility: Boolean
 }
