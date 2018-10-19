@@ -5,33 +5,21 @@ import * as React from 'react';
 export default class BattleSubmissionForm extends React.Component<IBattleSubmissionFormProps>{
   render() {
     return (
-      <form onSubmit={this.props.form.onSubmit}>
-        <p>{this.props.form.$('displayName').error}</p>
-        <p>{this.props.form.$('email').error}</p>
-        <p>{this.props.form.$('realName').error}</p>
+      <form>
+        <p>{this.props.form.$('exScore').error}</p>
+        <p>{this.props.form.$('imageData').error}</p>
         <div>
-          <label htmlFor={this.props.form.$('displayName').id}>
-            {this.props.form.$('displayName').label}
+          <label htmlFor={this.props.form.$('exScore').id}>
+            {this.props.form.$('exScore').label}
           </label>
-          <input {...this.props.form.$('displayName').bind()} />
+          <input {...this.props.form.$('exScore').bind()} />
         </div>
         <div>
-          <label htmlFor={this.props.form.$('email').id}>
-            {this.props.form.$('email').label}
+          <label htmlFor={this.props.form.$('imageData').id}>
+            {this.props.form.$('imageData').label}
           </label>
-          <input {...this.props.form.$('email').bind()} />
+          <input {...this.props.form.$('imageData').bind()} />
         </div>
-        <div>
-          <label htmlFor={this.props.form.$('realName').id}>
-            {this.props.form.$('realName').label}
-          </label>
-          <input {...this.props.form.$('realName').bind()} />
-        </div>
-
-        <button type="submit" onClick={this.props.form.onSubmit}>Submit</button>
-        <button type="button" onClick={this.props.form.onClear}>Clear</button>
-        <button type="button" onClick={this.props.form.onReset}>Reset</button>
-
         <p>{this.props.form.error}</p>
       </form>
     )
