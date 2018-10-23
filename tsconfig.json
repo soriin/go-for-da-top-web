@@ -14,6 +14,7 @@
     "static"
   ],
   "files": [
-    "./node_modules/typescript/lib/lib.es6.d.ts"
+    "./node_modules/typescript/lib/lib.es6.d.ts",
+    "./node_modules/typescript/lib/lib.es2017.d.ts"
   ]
 }

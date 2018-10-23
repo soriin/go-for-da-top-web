@@ -11,11 +11,16 @@ class TournamentService implements ITournamentService {
   async getStandings(tournamentId: string, stateHolder?: IState): Promise<any> {
     return await api.get(setParams(Endpoints.tournamentStandings, { _id: tournamentId }), { stateHolder })
   }
+
+  async joinTournament(tournamentId: string, stateHolder?: IState): Promise<any> {
+    return await api.post(setParams(Endpoints.tournamentJoin, { _id: tournamentId }), { stateHolder })
+  }
 }
 const tournamentService = new TournamentService()
 export default tournamentService
 
 export interface ITournamentService {
-  getActive(stateHolder?: IState): Promise<ITournament[]> ,
-  getStandings(tournamentId: string, stateHolder?: IState): Promise<any>
+  getActive(stateHolder?: IState): Promise<ITournament[]>,
+  getStandings(tournamentId: string, stateHolder?: IState): Promise<any>,
+  joinTournament(tournamentId: string, stateHolder?: IState): Promise<any>
 }

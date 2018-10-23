@@ -5,6 +5,7 @@ export enum Endpoints {
   matchupSongSelection = '/matchups/{_id}/songselection',
   tournaments = '/tournaments',
   tournamentStandings = '/tournaments/{_id}/standings',
+  tournamentJoin = '/tournaments/{_id}/entrant',
   songs = '/songs',
   song = '/songs/{_id}',
 }
