@@ -15,7 +15,8 @@ export default class TournamentListItem extends React.Component<ITournamentListI
     super(props)
 
     this.state = {
-      canJoin: false
+      isEntrant: false,
+      isEntryLocked: true
     }
 
     this.tournamentSvc = TournamentSvc
@@ -23,15 +24,19 @@ export default class TournamentListItem extends React.Component<ITournamentListI
 
   componentWillMount() {
     const tournament = this.props.tournament
-    if (moment(tournament.startDate) > moment() && !tournament.entrants.includes(this.props.appState.user.data._id)) {
-      this.setState({canJoin: true})
+    if (moment(tournament.startDate) > moment()) {
+      this.setState({ isEntryLocked: false })
+    }
+    if (tournament.entrants.includes(this.props.appState.user.data._id)) {
+      this.setState({ isEntrant: true })
     }
   }
 
   joinTournament = async () => {
     try {
-      //await this.tournamentSvc.joinTournament(this.props.tournament._id)
-      this.setState({canJoin: false})
+      const updatedTournament = await this.tournamentSvc.joinTournament(this.props.tournament._id)
+      this.setState({ isEntrant: true })
+      this.props.tournament.entrants = updatedTournament.entrants
     } catch {
 
     }
@@ -39,8 +44,9 @@ export default class TournamentListItem extends React.Component<ITournamentListI
 
   quitTournament = async () => {
     try {
-      //await this.tournamentSvc.joinTournament(this.props.tournament._id)
-      this.setState({canJoin: true})
+      const updatedTournament = await this.tournamentSvc.leaveTournament(this.props.tournament._id)
+      this.props.tournament.entrants = updatedTournament.entrants
+      this.setState({ isEntrant: false })
     } catch {
 
     }
@@ -49,10 +55,12 @@ export default class TournamentListItem extends React.Component<ITournamentListI
   render() {
     const standingsPath = `tournament/${this.props.tournament._id}`
     let joinLeaveButton: JSX.Element
-    if (this.state.canJoin) {
-      joinLeaveButton = <span onClick={this.joinTournament}>Join!</span>
-    } else {
-      joinLeaveButton = <span onClick={this.quitTournament}>Quit!</span>
+    if (!this.state.isEntryLocked) {
+      if (this.state.isEntrant) {
+        joinLeaveButton = <span className="gfdt-clickable" onClick={this.quitTournament}>Quit!</span>
+      } else {
+        joinLeaveButton = <span className="gfdt-clickable" onClick={this.joinTournament}>Join!</span>
+      }
     }
     return (
       <div className='gfdt-tournament-list-item-container'>
@@ -71,5 +79,6 @@ interface ITournamentListItemProps extends IDefaultProps {
 }
 
 interface ITournamentListItemState {
-  canJoin: Boolean
+  isEntryLocked: Boolean,
+  isEntrant: Boolean
 }
