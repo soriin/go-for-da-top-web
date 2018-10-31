@@ -20,6 +20,16 @@ class MatchupService implements IMatchupService {
         return user
       })
   }
+
+  async submitEntry(matchId: string, data:{file: any, exScore: string}) {
+    const formData = new FormData()
+    formData.append('file', data.file)
+    formData.append('exScore', data.exScore)
+    return await api.post(setParams(Endpoints.matchupSubmission, {_id: matchId}),
+    {
+      data: formData
+    })
+  }
 }
 
 const matchupService = new MatchupService()

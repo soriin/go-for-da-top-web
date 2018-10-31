@@ -2,6 +2,7 @@ export enum Endpoints {
   currentUser = '/users/me',
   userData = '/users/{_id}',
   matchups = '/matchups',
+  matchupSubmission = '/matchups/{_id}/submission',
   matchupSongSelection = '/matchups/{_id}/songselection',
   tournaments = '/tournaments',
   tournamentStandings = '/tournaments/{_id}/standings',
