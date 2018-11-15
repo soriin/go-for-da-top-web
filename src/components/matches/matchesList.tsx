@@ -17,7 +17,7 @@ export default class MatchesList extends React.Component<IMatchesListProps, IMat
     if (this.props.appState.myMatches.state === DataState.NoData ||
       this.props.appState.myMatches.state === DataState.Error) {
       const matches = await this.matchupService.getMine(this.props.appState.myMatches)
-      this.props.appState.myMatches.data = matches.matches
+      this.props.appState.myMatches.data = matches.matchups
     }
 
     let matchList: IMatch[]

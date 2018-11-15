@@ -67,7 +67,7 @@ export default class SongChooser extends React.Component<ISongChooserProps, ISon
     this.setState({ dialogState: DataState.Loading })
     await matchupService.setSongSelection(this.props.match._id, this.state.selectedSong._id)
     const matches = await matchupService.getMine(this.props.appState.myMatches)
-    this.props.appState.myMatches.data = matches.matches
+    this.props.appState.myMatches.data = matches.matchups
     this.setState({ modalVisibility: false })
   }
 

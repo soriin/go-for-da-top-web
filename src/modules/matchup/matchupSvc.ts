@@ -4,7 +4,7 @@ import { Endpoints, setParams } from '../../utils/endpoints';
 import * as cache from '../cache/cacheSvc';
 
 class MatchupService {
-  async getMine(stateHolder?: IState): Promise<{matches: IMatch[], count: Number}> {
+  async getMine(stateHolder?: IState): Promise<{matchups: IMatch[], count: Number}> {
     return await api.get(Endpoints.matchups, { stateHolder })
   }
   

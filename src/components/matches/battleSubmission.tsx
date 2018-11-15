@@ -11,11 +11,11 @@ import BattleSubmissionForm from './battleSubmissionForm';
 const MobxReactForm = mobxReactForm as any
 const plugins = { dvr: validatorjs }
 
-const initializeForm = () => {
+const initializeForm = (onSuccess, onError) => {
   const existingEntry: any = {}
   const hooks = {
-    onSuccess: this.onSuccess,
-    onError: this.onError
+    onSuccess: onSuccess,
+    onError: onError
   }
   const fields = [
     {
@@ -36,16 +36,25 @@ const initializeForm = () => {
 
 @observer
 export default class BattleSubmission extends React.Component<IBattleSubmissionProps, IBattleSubmissionState> {
-  form = initializeForm()
   state = {
     canSubmit: false,
     modalVisibility: false,
     modalState: DataState.NoData
   }
+  form: mobxReactForm
 
   componentWillMount() {
+    const canSubmit = this.determineIfCanSubmit()
+    this.setState({ canSubmit })
+    this.form = initializeForm(this.onSuccess, this.onError)
+  }
+
+  determineIfCanSubmit = () => {
     const me = this.props.appState.user.data
-    this.setState({ canSubmit: true })
+    if (this.props.battle.song) {
+      return true
+    }
+    return false
   }
 
   onSuccess = async (form) => {
@@ -83,15 +92,10 @@ export default class BattleSubmission extends React.Component<IBattleSubmissionP
     this.setState({ modalVisibility: false })
   }
 
-  render() {
-    let submitable = this.state.canSubmit
-    let body: JSX.Element
-    if (submitable) {
-      body = <span className='gfdt-clickable' onClick={this.toggleDialog}>Submit dem scores!</span>
-    } else {
-      body = <div></div>
+  renderSubmissionModal = () => {
+    if (!this.props.battle.song) {
+      return null
     }
-
     let footer: JSX.Element
     if (this.state.modalState !== DataState.Loading) {
       footer =
@@ -105,17 +109,32 @@ export default class BattleSubmission extends React.Component<IBattleSubmissionP
           <span>Loading...</span>
         </ModalFooter>
     }
+
+    return (
+      <Modal isOpen={this.state.modalVisibility} toggle={this.toggleDialog}>
+        <ModalHeader toggle={this.toggleDialog}>Submit your battle entry for {this.props.battle.song.title}!</ModalHeader>
+        <ModalBody>
+          <BattleSubmissionForm form={this.form} />
+        </ModalBody>
+        {footer}
+      </Modal>
+    )
+  }
+
+  render() {
+    let body: JSX.Element
+    if (this.state.canSubmit) {
+      body = <span className='gfdt-clickable' onClick={this.toggleDialog}>Submit dem scores!</span>
+    } else {
+      body = <div></div>
+    }
+
+    const submissionModal = this.renderSubmissionModal()
+    
     return (
       <div>
         {body}
-
-        <Modal isOpen={this.state.modalVisibility} toggle={this.toggleDialog}>
-          <ModalHeader toggle={this.toggleDialog}>Submit your battle entry for {this.props.battle.song.title}!</ModalHeader>
-          <ModalBody>
-            <BattleSubmissionForm form={this.form} />
-          </ModalBody>
-          {footer}
-        </Modal>
+        {submissionModal}
       </div>
     )
   }
