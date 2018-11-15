@@ -6,10 +6,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { ITournament } from '../../states/appState';
 import { IDefaultProps } from '../../utils/IDefaultProps';
-import TournamentSvc, { ITournamentService } from '../../modules/tournaments/tournamentSvc';
+import tournamentSvc from '../../modules/tournaments/tournamentSvc';
 
 export default class TournamentListItem extends React.Component<ITournamentListItemProps, ITournamentListItemState> {
-  tournamentSvc: ITournamentService
 
   constructor(props) {
     super(props)
@@ -18,8 +17,6 @@ export default class TournamentListItem extends React.Component<ITournamentListI
       isEntrant: false,
       isEntryLocked: true
     }
-
-    this.tournamentSvc = TournamentSvc
   }
 
   componentWillMount() {
@@ -34,7 +31,7 @@ export default class TournamentListItem extends React.Component<ITournamentListI
 
   joinTournament = async () => {
     try {
-      const updatedTournament = await this.tournamentSvc.joinTournament(this.props.tournament._id)
+      const updatedTournament = await tournamentSvc.joinTournament(this.props.tournament._id)
       this.setState({ isEntrant: true })
       this.props.tournament.entrants = updatedTournament.entrants
     } catch {
@@ -44,7 +41,7 @@ export default class TournamentListItem extends React.Component<ITournamentListI
 
   quitTournament = async () => {
     try {
-      const updatedTournament = await this.tournamentSvc.leaveTournament(this.props.tournament._id)
+      const updatedTournament = await tournamentSvc.leaveTournament(this.props.tournament._id)
       this.props.tournament.entrants = updatedTournament.entrants
       this.setState({ isEntrant: false })
     } catch {

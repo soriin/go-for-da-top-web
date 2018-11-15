@@ -6,9 +6,6 @@ import { IPageDefaultProps } from '../utils/IDefaultProps';
 
 @observer
 export default class MatchesPage extends React.Component<IPageDefaultProps> {
-  constructor(props) {
-    super(props)
-  }
   render() {
     return (
       <MatchesList appState={this.props.appState} />

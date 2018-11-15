@@ -7,15 +7,12 @@ import { IState, DataState } from '../states/appState';
 
 @observer
 export default class TournamentStandingsPage extends React.Component<IPageDefaultProps, ITournamentStandingsState> {
-  constructor(props) {
-    super(props)
-    this.state = {
+  state = {
       standings: {
         data: [],
         state: DataState.NoData
       }
     }
-  }
 
   async componentWillMount() {
     const stateHolder = {
@@ -31,16 +28,16 @@ export default class TournamentStandingsPage extends React.Component<IPageDefaul
     })
   }
 
+  renderStandingsList(standings) {
+    return standings.map(s => {
+      return <div key={s._id}>
+        {s.displayName} | {s.score}
+      </div>
+    })
+  }
+
   render() {
-    const standings = this.state.standings.data
-    let standingsElems : JSX.Element[]
-    if (standings) {
-      standingsElems = standings.map(s => {
-        return <div key={s._id}>
-          {s.displayName} | {s.score}
-        </div>
-      })
-    }
+    const standingsElems = this.renderStandingsList(this.state.standings.data)
     return (
       <div>
         <div>

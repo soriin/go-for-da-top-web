@@ -1,10 +1,10 @@
-import { DataState, IState, IMatch } from '../../states/appState';
+import { IState, IMatch } from '../../states/appState';
 import api from '../../utils/api';
 import { Endpoints, setParams } from '../../utils/endpoints';
 import * as cache from '../cache/cacheSvc';
 
-class MatchupService implements IMatchupService {
-  async getMine(stateHolder?: IState): Promise<IMatch[]> {
+class MatchupService {
+  async getMine(stateHolder?: IState): Promise<{matches: IMatch[], count: Number}> {
     return await api.get(Endpoints.matchups, { stateHolder })
   }
   
@@ -21,7 +21,7 @@ class MatchupService implements IMatchupService {
       })
   }
 
-  async submitEntry(matchId: string, data:{file: any, exScore: string}) {
+  async submitEntry(matchId: string, data:{file: any, exScore: string}) : Promise<IMatch>  {
     const formData = new FormData()
     formData.append('file', data.file)
     formData.append('exScore', data.exScore)
@@ -34,8 +34,3 @@ class MatchupService implements IMatchupService {
 
 const matchupService = new MatchupService()
 export default matchupService
-
-export interface IMatchupService {
-  getMine(stateHolder?: IState): Promise<any>,
-  setSongSelection(matchId: string, songId: string) : Promise<IMatch>
-} 

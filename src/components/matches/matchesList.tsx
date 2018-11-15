@@ -2,28 +2,22 @@ import { observer } from 'mobx-react';
 import * as moment from 'moment';
 import * as React from 'react';
 
-import matchupService, { IMatchupService } from '../../modules/matchup/matchupSvc';
+import matchupService from '../../modules/matchup/matchupSvc';
 import { DataState, IAppState, IMatch } from '../../states/appState';
 import MatchListItem from './matchListItem';
 
 @observer
 export default class MatchesList extends React.Component<IMatchesListProps, IMatchesListState> {
-  matchupService: IMatchupService
-
-  constructor(props) {
-    super(props)
-    this.matchupService = matchupService
-
-    this.state = {
-      matchList: []
-    }
+  matchupService = matchupService
+  state = {
+    matchList: []
   }
 
   async componentDidMount() {
     if (this.props.appState.myMatches.state === DataState.NoData ||
       this.props.appState.myMatches.state === DataState.Error) {
       const matches = await this.matchupService.getMine(this.props.appState.myMatches)
-      this.props.appState.myMatches.data = matches.matchups
+      this.props.appState.myMatches.data = matches.matches
     }
 
     let matchList: IMatch[]

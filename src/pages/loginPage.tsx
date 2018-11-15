@@ -8,11 +8,7 @@ import { IPageDefaultProps } from '../utils/IDefaultProps';
 
 @observer
 export default class LoginPage extends React.Component<IPageDefaultProps> {
-  constructor(props) {
-    super(props)
-    this.signIn = this.signIn.bind(this)
-  }
-  signIn() {
+  signIn = () => {
     window.location.href = `${apiBase}/login/facebook`
   }
 

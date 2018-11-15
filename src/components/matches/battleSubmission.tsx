@@ -11,38 +11,36 @@ import BattleSubmissionForm from './battleSubmissionForm';
 const MobxReactForm = mobxReactForm as any
 const plugins = { dvr: validatorjs }
 
+const initializeForm = () => {
+  const existingEntry: any = {}
+  const hooks = {
+    onSuccess: this.onSuccess,
+    onError: this.onError
+  }
+  const fields = [
+    {
+      name: 'exScore',
+      label: 'EX Score',
+      rules: 'required|integer|between:1,9999',
+      value: existingEntry.exScore
+    },
+    {
+      name: 'imageData',
+      label: 'Image Proof',
+      rules: 'required',
+      value: existingEntry.imageData
+    }
+  ]
+  return new MobxReactForm({ fields }, { plugins, hooks })
+}
+
 @observer
 export default class BattleSubmission extends React.Component<IBattleSubmissionProps, IBattleSubmissionState> {
-  form: any
-
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      canSubmit: false,
-      modalVisibility: false,
-      modalState: DataState.NoData
-    }
-    const existingEntry: any = {}
-    const hooks = {
-      onSuccess: this.onSuccess,
-      onError: this.onError
-    }
-    const fields = [
-      {
-        name: 'exScore',
-        label: 'EX Score',
-        rules: 'required|integer|between:1,9999',
-        value: existingEntry.exScore
-      },
-      {
-        name: 'imageData',
-        label: 'Image Proof',
-        rules: 'required',
-        value: existingEntry.imageData
-      }
-    ]
-    this.form = new MobxReactForm({ fields }, { plugins, hooks })
+  form = initializeForm()
+  state = {
+    canSubmit: false,
+    modalVisibility: false,
+    modalState: DataState.NoData
   }
 
   componentWillMount() {

@@ -2,16 +2,13 @@ import * as React from 'react';
 import Select from 'react-select';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
-import matchupService, { IMatchupService } from '../modules/matchup/matchupSvc';
-import songService, { ISongService } from '../modules/song/songSvc';
-import userService, { IUserService } from '../modules/user/userSvc';
+import matchupService from '../modules/matchup/matchupSvc';
+import songService from '../modules/song/songSvc';
+import userService from '../modules/user/userSvc';
 import { DataState, IBattle, IMatch, ISong } from '../states/appState';
 import { IDefaultProps } from '../utils/IDefaultProps';
 
 export default class SongChooser extends React.Component<ISongChooserProps, ISongChooserState> {
-  userService: IUserService
-  songService: ISongService
-  matchupService: IMatchupService
   constructor(props) {
     super(props)
     this.state = {
@@ -23,9 +20,6 @@ export default class SongChooser extends React.Component<ISongChooserProps, ISon
       dialogState: DataState.Loaded,
       songOptions: undefined
     };
-    this.userService = userService
-    this.songService = songService
-    this.matchupService = matchupService
 
     this.toggleDialog = this.toggleDialog.bind(this)
     this.selectSong = this.selectSong.bind(this)
@@ -37,20 +31,20 @@ export default class SongChooser extends React.Component<ISongChooserProps, ISon
     const playerOneId = this.props.match.players[0].user._id
     const playerTwoId = this.props.match.players[1].user._id
     if (myId !== playerOneId) {
-      this.userService.getUserData(playerOneId)
+      userService.getUserData(playerOneId)
         .then((user) => this.setState({ playerOneName: user.displayName }))
     } else {
       this.setState({ playerOneName: 'you'})
     }
 
     if (myId !== playerTwoId) {
-      this.userService.getUserData(playerTwoId)
+      userService.getUserData(playerTwoId)
         .then((user) => this.setState({ playerTwoName: user.displayName }))
     } else {
       this.setState({ playerTwoName: 'you'})
     }
     
-    this.songService.getAllSongs(this.props.appState.songs)
+    songService.getAllSongs(this.props.appState.songs)
       .then(songs => {
         if (!songs) return
         const options = songs.map(s => { return { value: s, label: s.title } })
@@ -71,9 +65,9 @@ export default class SongChooser extends React.Component<ISongChooserProps, ISon
 
   async saveSongChoice() {
     this.setState({ dialogState: DataState.Loading })
-    await this.matchupService.setSongSelection(this.props.match._id, this.state.selectedSong._id)
-    const matches = await this.matchupService.getMine(this.props.appState.myMatches)
-    this.props.appState.myMatches.data = matches.matchups
+    await matchupService.setSongSelection(this.props.match._id, this.state.selectedSong._id)
+    const matches = await matchupService.getMine(this.props.appState.myMatches)
+    this.props.appState.myMatches.data = matches.matches
     this.setState({ modalVisibility: false })
   }
 
