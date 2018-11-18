@@ -37,21 +37,18 @@ const initializeForm = (onSuccess, onError) => {
 @observer
 export default class BattleSubmission extends React.Component<IBattleSubmissionProps, IBattleSubmissionState> {
   state = {
-    canSubmit: false,
     modalVisibility: false,
     modalState: DataState.NoData
   }
   form: mobxReactForm
 
   componentWillMount() {
-    const canSubmit = this.determineIfCanSubmit()
-    this.setState({ canSubmit })
     this.form = initializeForm(this.onSuccess, this.onError)
   }
 
   determineIfCanSubmit = () => {
     const me = this.props.appState.user.data
-    if (this.props.battle.song) {
+    if (this.props.battle.song && !this.props.battle.song.isHidden) {
       return true
     }
     return false
@@ -122,8 +119,9 @@ export default class BattleSubmission extends React.Component<IBattleSubmissionP
   }
 
   render() {
+    console.log('BattleSubmission rendered')
     let body: JSX.Element
-    if (this.state.canSubmit) {
+    if (this.determineIfCanSubmit()) {
       body = <span className='gfdt-clickable' onClick={this.toggleDialog}>Submit dem scores!</span>
     } else {
       body = <div></div>
@@ -146,7 +144,6 @@ interface IBattleSubmissionProps extends IDefaultProps {
 }
 
 interface IBattleSubmissionState {
-  canSubmit: Boolean,
   modalVisibility: Boolean,
   modalState: DataState
 }

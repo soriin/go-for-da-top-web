@@ -56,7 +56,8 @@ export interface IBattle {
 
 export interface ISong {
   _id: string,
-  title: string
+  title: string,
+  isHidden: boolean
 }
 
 export interface IAppState {

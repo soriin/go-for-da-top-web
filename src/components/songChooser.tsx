@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react';
 import * as React from 'react';
 import Select from 'react-select';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
@@ -8,7 +9,11 @@ import userService from '../modules/user/userSvc';
 import { DataState, IBattle, IMatch, ISong } from '../states/appState';
 import { IDefaultProps } from '../utils/IDefaultProps';
 
+@observer
 export default class SongChooser extends React.Component<ISongChooserProps, ISongChooserState> {
+  componentWillReact() {
+    console.log('SongChooser componentWillReact')
+  }
   constructor(props) {
     super(props)
     this.state = {
@@ -65,13 +70,18 @@ export default class SongChooser extends React.Component<ISongChooserProps, ISon
 
   async saveSongChoice() {
     this.setState({ dialogState: DataState.Loading })
-    await matchupService.setSongSelection(this.props.match._id, this.state.selectedSong._id)
-    const matches = await matchupService.getMine(this.props.appState.myMatches)
-    this.props.appState.myMatches.data = matches.matchups
-    this.setState({ modalVisibility: false })
+    const updatedMatchup = await matchupService.setSongSelection(this.props.match._id, this.state.selectedSong._id)
+    for (let matchup of this.props.appState.myMatches.data) {
+      if (matchup._id === updatedMatchup._id) {
+        for (let battleIndex in matchup.battles) {
+          matchup.battles[battleIndex].song = updatedMatchup.battles[battleIndex].song
+        }
+      }
+    }
   }
 
   render() {
+    console.log('songchooser render')
     let selectElem: JSX.Element
     if (this.props.appState.songs.state === DataState.Loaded) {
       selectElem = <div>
