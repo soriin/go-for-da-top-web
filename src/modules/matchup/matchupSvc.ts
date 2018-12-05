@@ -21,10 +21,11 @@ class MatchupService {
       })
   }
 
-  async submitEntry(matchId: string, data:{file: any, exScore: string}) : Promise<IMatch>  {
+  async submitEntry(matchId: string, songId: string, data:{file: any, exScore: string}) : Promise<IMatch>  {
     const formData = new FormData()
     formData.append('file', data.file)
     formData.append('exScore', data.exScore)
+    formData.append('song', songId)
     return await api.post(setParams(Endpoints.matchupSubmission, {_id: matchId}),
     {
       data: formData

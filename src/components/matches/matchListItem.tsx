@@ -11,11 +11,7 @@ import BattleSubmission from './battleSubmission';
 
 @observer
 export default class MatchListItem extends React.Component<IMatchListItemProps> {
-  componentWillReact() {
-    console.log('MatchListItem componentWillReact')
-  }
   render() {
-    console.log('MatchListItem rendered')
     const myId = this.props.appState.user.data._id
     const opponent = Utils.getOpponent(this.props.match, this.props.appState.user.data)
 

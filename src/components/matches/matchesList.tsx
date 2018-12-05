@@ -37,7 +37,6 @@ export default class MatchesList extends React.Component<IMatchesListProps, IMat
   }
 
   render() {
-    console.log('matchesList render')
     let body: JSX.Element
     if (this.props.appState.myMatches.state === DataState.Loaded) {
       const matchList: JSX.Element[] = this.state.matchList.map(match => {

@@ -7,9 +7,21 @@ import validatorjs from 'validatorjs';
 import { DataState, IBattle, IMatch } from '../../states/appState';
 import { IDefaultProps } from '../../utils/IDefaultProps';
 import BattleSubmissionForm from './battleSubmissionForm';
+import matchupService from '../../modules/matchup/matchupSvc';
 
 const MobxReactForm = mobxReactForm as any
 const plugins = { dvr: validatorjs }
+
+
+interface IProps extends IDefaultProps {
+  match: IMatch,
+  battle: IBattle
+}
+
+interface IState {
+  modalVisibility: Boolean,
+  modalState: DataState
+}
 
 const initializeForm = (onSuccess, onError) => {
   const existingEntry: any = {}
@@ -27,27 +39,25 @@ const initializeForm = (onSuccess, onError) => {
     {
       name: 'imageData',
       label: 'Image Proof',
-      rules: 'required',
-      value: existingEntry.imageData
+      type: 'file'
     }
   ]
   return new MobxReactForm({ fields }, { plugins, hooks })
 }
 
 @observer
-export default class BattleSubmission extends React.Component<IBattleSubmissionProps, IBattleSubmissionState> {
+export default class BattleSubmission extends React.Component<IProps, IState> {
   state = {
     modalVisibility: false,
     modalState: DataState.NoData
   }
-  form: mobxReactForm
+  form: any
 
   componentWillMount() {
     this.form = initializeForm(this.onSuccess, this.onError)
   }
 
   determineIfCanSubmit = () => {
-    const me = this.props.appState.user.data
     if (this.props.battle.song && !this.props.battle.song.isHidden) {
       return true
     }
@@ -55,16 +65,29 @@ export default class BattleSubmission extends React.Component<IBattleSubmissionP
   }
 
   onSuccess = async (form) => {
-    const formValues = {
-      _id: this.props.appState.user.data._id,
-      realName: form.$('realName').$value,
-      displayName: form.$('displayName').$value,
-      email: form.$('email').$value
+    this.setState({ modalState: DataState.Loading })
+    const fileField = form.$('imageData')
+    const exScoreField = form.$('exScore')
+    if (!fileField.files || fileField.files.length === 0) {
+      this.setState({ modalState: DataState.Error })
+      return this.onError(form)
     }
-    // const updatedUser = await userService.updateUser(formValues)
-    // if (updatedUser) {
-    //   this.props.appState.user.data = updatedUser
-    // }
+    try {
+      const fileData = fileField.files[0]
+      const updatedMatchup = await matchupService.submitEntry(
+        this.props.match._id,
+        this.props.battle.song._id,
+        {
+          file: fileData,
+          exScore: exScoreField.$value
+        })
+      if (updatedMatchup) {
+        const updatedMatches = await matchupService.getMine(this.props.appState.myMatches)
+        this.props.appState.myMatches.data = updatedMatches.matchups
+      }
+    } catch (e) {
+      this.setState({ modalState: DataState.Error })
+    }
   }
 
   onError = (form) => {
@@ -78,17 +101,6 @@ export default class BattleSubmission extends React.Component<IBattleSubmissionP
     })
   }
 
-  saveSubmission = async () => {
-    this.setState({ modalState: DataState.Loading })
-
-    const { isValid } = await this.form.validate()
-    console.log(isValid, 'isValid')
-    // await this.matchupService.setSongSelection(this.props.match._id, this.state.selectedSong._id)
-    // const matches = await this.matchupService.getMine(this.props.appState.myMatches)
-    // this.props.appState.myMatches.data = matches.matchups
-    this.setState({ modalVisibility: false })
-  }
-
   renderSubmissionModal = () => {
     if (!this.props.battle.song) {
       return null
@@ -97,7 +109,7 @@ export default class BattleSubmission extends React.Component<IBattleSubmissionP
     if (this.state.modalState !== DataState.Loading) {
       footer =
         <ModalFooter>
-          <Button color="primary" onClick={this.saveSubmission}>Save</Button>{' '}
+          <Button color="primary" onClick={this.form.onSubmit}>Save</Button>{' '}
           <Button color="secondary" onClick={this.toggleDialog}>Cancel</Button>
         </ModalFooter>
     } else {
@@ -119,7 +131,6 @@ export default class BattleSubmission extends React.Component<IBattleSubmissionP
   }
 
   render() {
-    console.log('BattleSubmission rendered')
     let body: JSX.Element
     if (this.determineIfCanSubmit()) {
       body = <span className='gfdt-clickable' onClick={this.toggleDialog}>Submit dem scores!</span>
@@ -128,7 +139,7 @@ export default class BattleSubmission extends React.Component<IBattleSubmissionP
     }
 
     const submissionModal = this.renderSubmissionModal()
-    
+
     return (
       <div>
         {body}
@@ -136,14 +147,4 @@ export default class BattleSubmission extends React.Component<IBattleSubmissionP
       </div>
     )
   }
-}
-
-interface IBattleSubmissionProps extends IDefaultProps {
-  match: IMatch,
-  battle: IBattle
-}
-
-interface IBattleSubmissionState {
-  modalVisibility: Boolean,
-  modalState: DataState
 }

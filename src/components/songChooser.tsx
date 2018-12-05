@@ -11,9 +11,6 @@ import { IDefaultProps } from '../utils/IDefaultProps';
 
 @observer
 export default class SongChooser extends React.Component<ISongChooserProps, ISongChooserState> {
-  componentWillReact() {
-    console.log('SongChooser componentWillReact')
-  }
   constructor(props) {
     super(props)
     this.state = {
@@ -81,7 +78,6 @@ export default class SongChooser extends React.Component<ISongChooserProps, ISon
   }
 
   render() {
-    console.log('songchooser render')
     let selectElem: JSX.Element
     if (this.props.appState.songs.state === DataState.Loaded) {
       selectElem = <div>
