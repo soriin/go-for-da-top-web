@@ -4,10 +4,11 @@ import * as React from 'react';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import validatorjs from 'validatorjs';
 
-import { DataState, IBattle, IMatch } from '../../states/appState';
+import { DataState, IBattle, IMatch, IBattleEntry } from '../../states/appState';
 import { IDefaultProps } from '../../utils/IDefaultProps';
 import BattleSubmissionForm from './battleSubmissionForm';
 import matchupService from '../../modules/matchup/matchupSvc';
+import BattleData from './battleCard';
 
 const MobxReactForm = mobxReactForm as any
 const plugins = { dvr: validatorjs }
@@ -101,10 +102,12 @@ export default class BattleSubmission extends React.Component<IProps, IState> {
     })
   }
 
-  renderSubmissionModal = () => {
-    if (!this.props.battle.song) {
-      return null
-    }
+  getMyCurrentEntry = () => {
+    if (!this.props.battle.entries) return
+    return this.props.battle.entries[this.props.appState.user.data._id] as IBattleEntry
+  }
+
+  renderSubmissionModalFooter = () => {
     let footer: JSX.Element
     if (this.state.modalState !== DataState.Loading) {
       footer =
@@ -118,11 +121,22 @@ export default class BattleSubmission extends React.Component<IProps, IState> {
           <span>Loading...</span>
         </ModalFooter>
     }
+    return footer
+  }
+
+  renderSubmissionModal = () => {
+    if (!this.props.battle.song) {
+      return null
+    }
+    const footer = this.renderSubmissionModalFooter()
+    const myCurrentEntry = this.getMyCurrentEntry()
 
     return (
       <Modal isOpen={this.state.modalVisibility} toggle={this.toggleDialog}>
         <ModalHeader toggle={this.toggleDialog}>Submit your battle entry for {this.props.battle.song.title}!</ModalHeader>
         <ModalBody>
+          <BattleData entry={myCurrentEntry} />
+          <hr />
           <BattleSubmissionForm form={this.form} />
         </ModalBody>
         {footer}

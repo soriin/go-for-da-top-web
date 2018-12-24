@@ -51,7 +51,7 @@ export interface IBattle {
   _id: string,
   song: ISong,
   chooser: IUser,
-  entries: any
+  entries: object
 }
 
 export interface ISong {
@@ -105,4 +105,9 @@ export interface ITournament {
   startDate: Date,
   endDate: Date,
   entrants: string[]
+}
+
+export interface IBattleEntry {
+  exScore: number,
+  imageProofUrl: string
 }
