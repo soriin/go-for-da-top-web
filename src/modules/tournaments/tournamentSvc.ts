@@ -1,4 +1,4 @@
-import { IState, ITournament } from '../../states/appState';
+import { IState, ITournament, IMatch } from '../../states/appState';
 import api from '../../utils/api';
 import { Endpoints, setParams } from '../../utils/endpoints';
 import * as cache from '../cache/cacheSvc';
@@ -6,6 +6,10 @@ import * as cache from '../cache/cacheSvc';
 class TournamentService implements ITournamentService {
   async getActive(stateHolder?: IState): Promise<ITournament[]> {
     return await api.get(Endpoints.tournaments, { stateHolder })
+  }
+
+  async getMatchupsAwaitingVerification (tournamentId: string, stateHolder?: IState): Promise<IMatch[]> {
+    return await api.get(setParams(Endpoints.tournamentVerifiableMatchups, { _id: tournamentId}), {stateHolder})
   }
 
   async getStandings(tournamentId: string, stateHolder?: IState): Promise<any> {
@@ -25,6 +29,7 @@ export default tournamentService
 
 export interface ITournamentService {
   getActive(stateHolder?: IState): Promise<ITournament[]>,
+  getMatchupsAwaitingVerification(tournamentId: string, stateHolder?: IState): Promise<IMatch[]>,
   getStandings(tournamentId: string, stateHolder?: IState): Promise<any>,
   joinTournament(tournamentId: string, stateHolder?: IState): Promise<ITournament>,
   leaveTournament(tournamentId: string, stateHolder?: IState): Promise<ITournament>

@@ -5,6 +5,8 @@ import TourmanentsList from '../components/tournaments/tournamentList';
 import { IPageDefaultProps } from '../utils/IDefaultProps';
 
 export default class HomePage extends React.Component<IPageDefaultProps> {
+
+
   render() {
     const today = new Date()
     return (
